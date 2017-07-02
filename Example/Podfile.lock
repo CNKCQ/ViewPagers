@@ -1,0 +1,16 @@
+PODS:
+  - ViewPager (0.1.0)
+
+DEPENDENCIES:
+  - ViewPager (from `../`)
+
+EXTERNAL SOURCES:
+  ViewPager:
+    :path: ../
+
+SPEC CHECKSUMS:
+  ViewPager: 869da39f0af6cbcc6d7850db5b58fc17d9080383
+
+PODFILE CHECKSUM: 9079e77972abb67e29ef2f384f583bef6ab896c4
+
+COCOAPODS: 1.2.1.beta.1
