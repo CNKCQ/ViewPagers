@@ -20,7 +20,7 @@ public class PageView: UIView {
     
     public init(frame: CGRect, titles : [String], style : TitleStyle, childVcs : [UIViewController], parentVc : UIViewController) {
         super.init(frame: frame)
-        
+        self.backgroundColor = .blue
         assert(titles.count == childVcs.count, "标题&控制器个数不同,请检测!!!")
         self.style = style
         self.titles = titles
@@ -34,22 +34,33 @@ public class PageView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public func viewDidLayoutSubviews() {
+        contentView.viewDidLayoutSubviews()
+        contentView.setCurrentIndex(titleView.currentIndex)
+    }
 }
 
 
 extension PageView {
     fileprivate func setupUI() {
         let titleH : CGFloat = style.titleHeight
-        let titleFrame = CGRect(x: 0, y: 0, width: frame.width, height: titleH)
-        titleView = TitleView(frame: titleFrame, titles: titles, style : style)
+        titleView = TitleView(frame: .zero, titles: titles, style : style)
         titleView.delegate = self
         addSubview(titleView)
-        
-        let contentFrame = CGRect(x: 0, y: titleH, width: frame.width, height: frame.height - titleH)
-        contentView = ContentView(frame: contentFrame, childVcs: childVcs, parentViewController: parentVc)
+        titleView.snp.makeConstraints { (make) in
+            make.right.left.equalTo(self)
+            make.height.equalTo(titleH)
+            make.top.equalTo(self.snp.top)
+        }
+        contentView = ContentView(frame: .zero, childVcs: childVcs, parentViewController: parentVc)
         contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         contentView.delegate = self
         addSubview(contentView)
+        contentView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalTo(self)
+            make.top.equalTo(self.titleView.snp.bottom)
+        }
     }
 }
 
@@ -60,9 +71,7 @@ extension PageView : ContentViewDelegate {
         titleView.setTitleWithProgress(progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
     }
     
-    func contentViewEndScroll(_ contentView: ContentView) {
-        titleView.contentViewDidEndScroll()
-    }
+    func contentViewEndScroll(_ contentView: ContentView) {    }
 }
 
 

@@ -8,24 +8,35 @@
 
 import UIKit
 import ViewPager
+import SnapKit
 
 class ViewController: UIViewController {
+    var pageView: PageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // 2.创建主题内容
         let style = TitleStyle(isShowBottomLine: true, bottomLineColor: .orange, bottomLineH: 5)
-        let pageFrame = CGRect(x: 0, y: 44 + 20, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 44 - 20)
-        let titles = ["1", "2", "3"]
+        let titles = ["待接单", "代取件", "配送中", "已完成", "待处理"]
         var childVcs = [UIViewController]()
-        for _ in titles {
+        for title in titles {
             let anchorVc = PageViewController()
+            anchorVc.titleLabel.text = title
             childVcs.append(anchorVc)
         }
-        let pageView = PageView(frame: pageFrame, titles: titles, style: style, childVcs: childVcs, parentVc: self)
+        edgesForExtendedLayout = []
+        pageView = PageView(frame: .zero, titles: titles, style: style, childVcs: childVcs, parentVc: self)
         view.addSubview(pageView)
+        pageView.snp.makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
 
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        pageView.viewDidLayoutSubviews() // 横竖屏适配
     }
 
     override func didReceiveMemoryWarning() {
