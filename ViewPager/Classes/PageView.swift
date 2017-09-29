@@ -17,8 +17,11 @@ public class PageView: UIView {
     
     fileprivate var titleView : TitleView!
     fileprivate var contentView : ContentView!
+    fileprivate var didSelected: ((Int) -> Void)?
+    fileprivate var viewDidAppear: ((UIViewController?, Int) -> Void)?
     
-    public init(frame: CGRect, titles : [String], style : TitleStyle, childVcs : [UIViewController], parentVc : UIViewController) {
+    public init(frame: CGRect, titles : [String], style : TitleStyle, childVcs : [UIViewController], parentVc : UIViewController, didSelected: ((Int) -> Void)?
+        = nil, viewDidAppear: ((UIViewController?, Int) -> Void)? = nil) {
         super.init(frame: frame)
         self.backgroundColor = .blue
         assert(titles.count == childVcs.count, "标题&控制器个数不同,请检测!!!")
@@ -26,8 +29,9 @@ public class PageView: UIView {
         self.titles = titles
         self.childVcs = childVcs
         self.parentVc = parentVc
+        self.didSelected = didSelected
+        self.viewDidAppear = viewDidAppear
         parentVc.automaticallyAdjustsScrollViewInsets = false
-        
         setupUI()
     }
     
@@ -37,7 +41,16 @@ public class PageView: UIView {
     
     public func viewDidLayoutSubviews() {
         contentView.viewDidLayoutSubviews()
-        contentView.setCurrentIndex(titleView.currentIndex)
+        delay(after: 0.00001) { [weak self] in
+            self?.contentView.setCurrentIndex(self?.titleView.currentIndex ?? 0)
+        }
+    }
+    
+    func delay(after: TimeInterval, execute: @escaping () -> Void) {
+        let delayTime = DispatchTime.now() + after
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+            execute()
+        }
     }
 }
 
@@ -71,13 +84,19 @@ extension PageView : ContentViewDelegate {
         titleView.setTitleWithProgress(progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
     }
     
-    func contentViewEndScroll(_ contentView: ContentView) {    }
+    func viewDidAppear(_ page: UIViewController?, index: Int) {
+        self.viewDidAppear?(page, index)
+    }
 }
 
 
 // MARK:- 设置TitleView的代理
 extension PageView : TitleViewDelegate {
+    
     func titleView(_ titleView: TitleView, selectedIndex index: Int) {
+        self.didSelected?(index)
         contentView.setCurrentIndex(index)
     }
 }
+
+

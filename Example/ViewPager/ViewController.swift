@@ -22,18 +22,23 @@ class ViewController: UIViewController {
         var childVcs = [UIViewController]()
         for title in titles {
             let anchorVc = PageViewController()
+            anchorVc.title = title
             anchorVc.titleLabel.text = title
             childVcs.append(anchorVc)
         }
         edgesForExtendedLayout = []
-        pageView = PageView(frame: .zero, titles: titles, style: style, childVcs: childVcs, parentVc: self)
+        pageView = PageView(frame: .zero, titles: titles, style: style, childVcs: childVcs, parentVc: self,didSelected: { (index) in
+            print("🌹", "selected", index, "🌹")
+        }, viewDidAppear: { (page, index) in
+            print("🌹", page?.title ?? "", "appear", index, "🌹")
+        })
+   
         view.addSubview(pageView)
         pageView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-
     }
-    
+        
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         pageView.viewDidLayoutSubviews() // 横竖屏适配

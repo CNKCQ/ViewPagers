@@ -12,7 +12,9 @@ import SnapKit
 
 // MARK:- 定义协议
 protocol TitleViewDelegate : class {
+    
     func titleView(_ titleView : TitleView, selectedIndex index : Int)
+    
 }
 
 class TitleView: UIView {

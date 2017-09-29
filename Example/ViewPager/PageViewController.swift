@@ -20,6 +20,10 @@ class PageViewController: UIViewController {
         titleLabel.frame = view.bounds
         view.addSubview(titleLabel)
     }
+        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
 }
 
 public extension UIColor {

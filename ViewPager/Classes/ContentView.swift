@@ -9,9 +9,10 @@
 import UIKit
 
 @objc protocol ContentViewDelegate : class {
+    
     func contentView(_ contentView : ContentView, progress : CGFloat, sourceIndex : Int, targetIndex : Int)
     
-    @objc optional func contentViewEndScroll(_ contentView : ContentView)
+    @objc optional func viewDidAppear(_ page: UIViewController?, index: Int)
 }
 
 private let kContentCellID = "kContentCellID"
@@ -49,7 +50,6 @@ class ContentView: UIView {
         
         self.childVcs = childVcs
         self.parentVc = parentViewController
-        
         setupUI()
     }
     
@@ -74,10 +74,8 @@ extension ContentView {
         for vc in childVcs {
             parentVc.addChildViewController(vc)
         }
-        
         // 2.添加UICollectionView
         addSubview(collectionView)
-        
         collectionView.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
@@ -119,7 +117,6 @@ extension ContentView : UICollectionViewDelegate, UICollectionViewDelegateFlowLa
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         
         isForbidScrollDelegate = false
-        
         startOffsetX = scrollView.contentOffset.x
     }
     
@@ -172,23 +169,21 @@ extension ContentView : UICollectionViewDelegate, UICollectionViewDelegateFlowLa
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        delegate?.contentViewEndScroll?(self)
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            delegate?.contentViewEndScroll?(self)
+        let pageWidth: CGFloat = collectionView.frame.size.width
+        var currentPage: CGFloat = collectionView.contentOffset.x / pageWidth
+        if 0.0 != fmodf(Float(currentPage), 1.0) {
+            currentPage += 1
         }
+        delegate?.viewDidAppear?(self.childVcs[Int(currentPage)], index: Int(currentPage))
     }
 }
 
 // MARK:- 对外暴露的方法
 extension ContentView {
+    
     func setCurrentIndex(_ currentIndex : Int) {
-        
         // 1.记录需要进制执行代理方法
         isForbidScrollDelegate = true
-        
         // 2.滚动正确的位置
         let offsetX = CGFloat(currentIndex) * collectionView.frame.width
         collectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false)
