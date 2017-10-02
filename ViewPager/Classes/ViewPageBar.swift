@@ -1,5 +1,5 @@
 //
-//  TitleView.swift
+//  ViewPageBar.swift
 //  Pods
 //
 //  Created by Jack on 2017/7/2.
@@ -10,19 +10,19 @@
 import UIKit
 import SnapKit
 
-// MARK:- TitleViewDelegate
-protocol TitleViewDelegate : class {
+// MARK:- ViewPageBarDelegate
+protocol ViewPageBarDelegate : class {
     
-    func titleView(_ titleView : TitleView, selectedIndex index : Int)
+    func viewPageBar(_ viewPageBar : ViewPageBar, selectedIndex index : Int)
     
 }
 
-public class TitleView: UIView {
+public class ViewPageBar: UIView {
     
-    weak var delegate : TitleViewDelegate?
+    weak var delegate : ViewPageBarDelegate?
     
     fileprivate var titles : [String]!
-    fileprivate var style : TitleStyle!
+    fileprivate var style : StyleCustomizable!
     var currentIndex : Int = 0
     var bottomoffset: CGFloat = 5
     
@@ -38,14 +38,13 @@ public class TitleView: UIView {
     
     fileprivate lazy var selectedColor : (r : CGFloat, g : CGFloat, b : CGFloat) = self.rgb(self.style.selectedColor)
     
-    init(frame: CGRect, titles : [String], style : TitleStyle) {
+    init(frame: CGRect, titles : [String], style : StyleCustomizable) {
         super.init(frame: frame)
         
         self.titles = titles
         self.style = style
-        
         setupUI()
-        
+        self.clipsToBounds = true
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -56,7 +55,7 @@ public class TitleView: UIView {
 
 
 // MARK: - randering ui
-extension TitleView {
+extension ViewPageBar {
     fileprivate func setupUI() {
         backgroundColor = style.titleBgColor
         setupTitleLabels()
@@ -125,12 +124,10 @@ extension TitleView {
             make.height.equalTo(style.bottomLineH)
         }
     }
-    
-    fileprivate func setupCoverView() {}
 }
 
 
-extension TitleView {
+extension ViewPageBar {
     @objc fileprivate func titleLabelClick(_ tap : UITapGestureRecognizer) {
         guard let currentLabel = tap.view as? UILabel else { return }
         if currentLabel.tag == currentIndex { return }
@@ -138,7 +135,7 @@ extension TitleView {
         currentLabel.textColor = style.selectedColor
         oldLabel.textColor = style.normalColor
         currentIndex = currentLabel.tag
-        delegate?.titleView(self, selectedIndex: currentIndex)
+        delegate?.viewPageBar(self, selectedIndex: currentIndex)
         
         if style.isShowBottomLine {
             UIView.animate(withDuration: 0.15, animations: {
@@ -153,7 +150,7 @@ extension TitleView {
     }
 }
 
-extension TitleView {
+extension ViewPageBar {
     
     func finishProgress(index: Int) {
         let currentLabel = self.titleLabels[index]
@@ -201,7 +198,7 @@ extension TitleView {
 }
 
 // MARK:- get the cgfloat of the color
-extension TitleView {
+extension ViewPageBar {
     
     fileprivate func rgb(_ color : UIColor) -> (CGFloat, CGFloat, CGFloat) {
         return (color.components[0] * 255, color.components[1] * 255, color.components[2] * 255)

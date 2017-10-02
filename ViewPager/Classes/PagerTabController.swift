@@ -39,7 +39,6 @@ class PagerTabController: UITabBarController {
         view.backgroundColor = .red
         edgesForExtendedLayout = []
         extendedLayoutIncludesOpaqueBars = true
-        self.tabBar.isHidden = true
         self.panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:)))
         self.view.addGestureRecognizer(self.panGesture)
     }
@@ -78,7 +77,7 @@ class PagerTabController: UITabBarController {
             if self.shouldUpdateProgress == true {
                 self.viewPagerTabBarDelete?.interactiveTransition.update(progress)
                 (self.parent as? ViewPagerController)?
-                    .titleView.updateProgress(progress,
+                    .viewPageBar.updateProgress(progress,
                                                     fromIndex: self.viewPagerTabBarDelete.fromIndex,
                                                     toIndex: self.viewPagerTabBarDelete.toIndex)
             }
@@ -90,21 +89,21 @@ class PagerTabController: UITabBarController {
                         .completionSpeed = 0.99
                     self.viewPagerTabBarDelete?
                         .interactiveTransition.finish()
-                    (self.parent as? ViewPagerController)?.titleView
+                    (self.parent as? ViewPagerController)?.viewPageBar
                         .updateProgress(progress,
                                               fromIndex: self.viewPagerTabBarDelete.fromIndex,
                                               toIndex: self.viewPagerTabBarDelete.toIndex)
-                    (self.parent as? ViewPagerController)?.titleView.finishProgress(index: self.viewPagerTabBarDelete.toIndex)
+                    (self.parent as? ViewPagerController)?.viewPageBar.finishProgress(index: self.viewPagerTabBarDelete.toIndex)
                     self.viewPagerTabBarDelete?.interactive = false
                     self.pageDidAppear?(self.childViewControllers[self.selectedIndex], self.selectedIndex)
                 } else {
                     self.viewPagerTabBarDelete?
                         .interactiveTransition.completionSpeed = 0.99
-                    (self.parent as? ViewPagerController)?.titleView
+                    (self.parent as? ViewPagerController)?.viewPageBar
                         .updateProgress(progress,
                                               fromIndex: self.viewPagerTabBarDelete.toIndex,
                                               toIndex: self.viewPagerTabBarDelete.fromIndex)
-                    (self.parent as? ViewPagerController)?.titleView.finishProgress(index: self.viewPagerTabBarDelete.fromIndex)
+                    (self.parent as? ViewPagerController)?.viewPageBar.finishProgress(index: self.viewPagerTabBarDelete.fromIndex)
                     self.viewPagerTabBarDelete?.interactiveTransition.cancel()
                 }
             }
@@ -115,9 +114,9 @@ class PagerTabController: UITabBarController {
     }
 }
 
-extension PagerTabController: TitleViewDelegate {
+extension PagerTabController: ViewPageBarDelegate {
     
-    func titleView(_ titleView: TitleView, selectedIndex index: Int) {
+    func viewPageBar(_ viewPageBar: ViewPageBar, selectedIndex index: Int) {
         self.selectedIndex = index
         self.viewPagerTabBarDelete.interactive = false
         self.didSelected?(index)
