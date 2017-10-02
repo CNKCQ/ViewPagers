@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-import ViewPager
+import ViewPagers
 
 class Tests: XCTestCase {
     

@@ -8,7 +8,18 @@
 
 import UIKit
 import SnapKit
-import ViewPager
+import ViewPagers
+
+struct CustomPagerBarStyle: StyleCustomizable {
+    
+    var titleBgColor: UIColor {
+        return UIColor.white
+    }
+    
+    var isShowPageBar: Bool {
+        return true
+    }
+}
 
 class ViewController: UIViewController {
     
@@ -17,26 +28,7 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor.blue
         print("🌹 44444")
         
-        
-        let first = TabFController()
-        let second = TabSController()
-        let third = TabTController()
-        let fouth = TabSController()
-        let fieve = TabTController()
-        let titles = ["待接单", "代取件", "配送中", "已完成", "待处理"]
-        first.tabBarItem.title = titles[0]
-        second.tabBarItem.title = titles[1]
-        third.tabBarItem.title = titles[2]
-        fouth.tabBarItem.title = titles[3]
-        fieve.tabBarItem.title = titles[4]
-        let viewPs: [(UIViewController, String)] = [(first, titles[0]), (second, titles[1]), (third, titles[2]), (fouth, titles[3]), (fieve, titles[4])]
-        let tab = ViewPagerController()
-        tab.viewPagers =  viewPs.flatMap(
-            {
-                ViewPager(title: $1, controller: $0)
-                
-            }
-        )
+        let tab = ViewPagerController(viewPagers, pagerBar: CustomPagerBarStyle())
         tab.pageDidAppear = { (controller, index) in
             print(controller, index)
         }
@@ -55,5 +47,27 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
+    
+    lazy var viewPagers: [ViewPager] =  {
+        let first = TabFController()
+        let second = TabSController()
+        let third = TabTController()
+        let fouth = TabSController()
+        let fieve = TabTController()
+        let titles = ["待接单", "代取件", "配送中", "已完成", "待处理"]
+        first.tabBarItem.title = titles[0]
+        second.tabBarItem.title = titles[1]
+        third.tabBarItem.title = titles[2]
+        fouth.tabBarItem.title = titles[3]
+        fieve.tabBarItem.title = titles[4]
+        let viewPs: [(UIViewController, String)] = [(first, titles[0]), (second, titles[1]), (third, titles[2]), (fouth, titles[3]), (fieve, titles[4])]
+        let viewPagers = viewPs.flatMap(
+        {
+            ViewPager(title: $1, controller: $0)
+            
+            }
+        )
+        return viewPagers
+    }()
 }
 
