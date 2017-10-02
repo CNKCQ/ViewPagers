@@ -22,7 +22,8 @@ public struct TitleStyle {
     var titleMargin : CGFloat = 20
     /// titleView的高度
     var titleHeight : CGFloat = 44
-    /// titleView的北京颜色
+    
+    /// titleView's backgroundColor
     var titleBgColor : UIColor = .clear
     /// 是否显示底部滚动条
     var isShowBottomLine : Bool = false
@@ -51,7 +52,7 @@ public struct TitleStyle {
             normalColor : UIColor = UIColor(r: 0, g: 0, b: 0),
             selectedColor : UIColor = UIColor(r: 255, g: 127, b: 0),
             font : UIFont = UIFont.systemFont(ofSize: 14.0),
-            titleMargin : CGFloat = 20,
+            titleMargin : CGFloat = 25,
             titleHeight : CGFloat = 44,
             titleBgColor : UIColor = .clear,
             isShowBottomLine : Bool = false,
@@ -84,17 +85,36 @@ public struct TitleStyle {
         self.coverH = coverH
         self.coverW = coverW
         self.coverRadius = coverRadius
-        
     }
 }
 
-extension UIColor {
+public extension UIColor {
+    
     convenience init(r : CGFloat, g : CGFloat, b : CGFloat) {
-        self.init(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
+        self.init(
+            red: r / 255.0,
+            green: g / 255.0,
+            blue: b / 255.0,
+            alpha: 1.0
+        )
     }
     
-    class func randomColor() -> UIColor {
-        return UIColor(r: CGFloat(arc4random_uniform(256)), g: CGFloat(arc4random_uniform(256)), b: CGFloat(arc4random_uniform(256)))
+    /// Returns random UIColor with random alpha(default: 1.0)
+    static var random: UIColor {
+        return UIColor(
+            red: CGFloat(arc4random_uniform(256)) / CGFloat(255),
+            green: CGFloat(arc4random_uniform(256)) / CGFloat(255),
+            blue: CGFloat(arc4random_uniform(256)) / CGFloat(255),
+            alpha: 1.0
+        )
     }
+
+    /// Return rgba components of `self`
+    var components: [CGFloat] {
+        var (r, g, b, a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0.0, 0.0, 0.0, 0.0)
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        return [r, g, b, a]
+    }
+
 }
 

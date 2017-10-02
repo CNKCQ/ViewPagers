@@ -1,11 +1,9 @@
 use_frameworks!
 
 target 'ViewPager_Example' do
-  pod 'ViewPager', :path => '../'
+    pod 'ViewPager', :path => '../', :branch => 'develop'
 
   target 'ViewPager_Tests' do
     inherit! :search_paths
-
-    
   end
 end

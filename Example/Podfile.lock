@@ -1,16 +1,20 @@
 PODS:
-  - ViewPager (0.1.0)
+  - SnapKit (4.0.0)
+  - ViewPager (0.1.0):
+    - SnapKit
 
 DEPENDENCIES:
   - ViewPager (from `../`)
 
 EXTERNAL SOURCES:
   ViewPager:
+    :branch: develop
     :path: ../
 
 SPEC CHECKSUMS:
-  ViewPager: 869da39f0af6cbcc6d7850db5b58fc17d9080383
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  ViewPager: 170c8d3c5b6c151f5b4a5c28836582802ef76b51
 
-PODFILE CHECKSUM: 9079e77972abb67e29ef2f384f583bef6ab896c4
+PODFILE CHECKSUM: d3008408841d842c7afbbe6248c746380c10c504
 
-COCOAPODS: 1.2.1.beta.1
+COCOAPODS: 1.3.1
