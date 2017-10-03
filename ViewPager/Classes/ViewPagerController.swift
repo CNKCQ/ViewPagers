@@ -9,7 +9,7 @@
 import UIKit
 
 public class ViewPagerController: UIViewController {
-    internal var viewPageBar: ViewPageBar!
+    public var viewPageBar: ViewPageBar!
     private var style: StyleCustomizable!
     private var viewPagers: [ViewPager] = []
     public var pageDidAppear: ((_ toPage: UIViewController, _ index: Int) -> Void)?

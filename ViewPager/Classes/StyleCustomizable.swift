@@ -32,7 +32,6 @@ public protocol StyleCustomizable {
     /// Title字体大小
     var font : UIFont { get }
 
-    
     /// 是否显示底部滚动条
     var isShowBottomLine: Bool { get }
     
@@ -66,7 +65,7 @@ public extension StyleCustomizable {
     
     /// 滚动Title的字体间距
     var titleMargin : CGFloat {
-        return 20
+        return 0
     }
     
     /// viewPageBar的高度

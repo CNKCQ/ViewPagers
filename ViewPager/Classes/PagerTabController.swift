@@ -36,7 +36,6 @@ class PagerTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
         edgesForExtendedLayout = []
         extendedLayoutIncludesOpaqueBars = true
         self.panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:)))

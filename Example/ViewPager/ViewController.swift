@@ -29,27 +29,33 @@ struct CustomPagerBarStyle: StyleCustomizable {
     }
     
     var bottomLineMargin: CGFloat {
-        return 40
+        return 60
     }
+    
+    var bottomLineColor: UIColor {
+        return UIColor.white
+    }
+    
 }
 
 class ViewController: UIViewController {
+    var viewPagerController: ViewPagerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.blue
         print("🌹 44444")
         
-        let tab = ViewPagerController(viewPagers, pagerBar: CustomPagerBarStyle())
-        tab.pageDidAppear = { (controller, index) in
+        viewPagerController = ViewPagerController(viewPagers, pagerBar: CustomPagerBarStyle())
+        viewPagerController.pageDidAppear = { (controller, index) in
             print(controller, index)
         }
-        tab.didSelected = { (index) in
+        viewPagerController.didSelected = { (index) in
             print("didSelected-----\(index)")
         }
-        addChildViewController(tab)
-        view.addSubview(tab.view)
-        tab.view.snp.makeConstraints { (make) in
+        addChildViewController(viewPagerController)
+        view.addSubview(viewPagerController.view)
+        viewPagerController.view.snp.makeConstraints { (make) in
             make.left.right.equalTo(self.view)
             make.top.equalTo(self.view.snp.top).offset(200)
             make.bottom.equalTo(self.view.snp.bottom)
@@ -58,6 +64,11 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let titles = ["待接单1", "代取件2", "配送中5", "已完成4", "待处理2"]
+        viewPagerController.viewPageBar.update(titles)
     }
     
     lazy var viewPagers: [ViewPager] =  {

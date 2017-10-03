@@ -50,6 +50,12 @@ public class ViewPageBar: UIView {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public func update(_ titles: [String]) {
+        for (index, title) in titles.enumerated() {
+            self.titleLabels[index].text = title
+        }
+    }
 }
 
 
