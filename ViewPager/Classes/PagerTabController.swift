@@ -118,7 +118,7 @@ extension PagerTabController: ViewPageBarDelegate {
     func viewPageBar(_ viewPageBar: ViewPageBar, selectedIndex index: Int) {
         self.selectedIndex = index
         self.viewPagerTabBarDelete.interactive = false
-        self.didSelected?(index)
+        viewPageBar.finishProgress(index: index)
     }
 }
 

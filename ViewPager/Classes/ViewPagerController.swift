@@ -10,10 +10,17 @@ import UIKit
 
 public class ViewPagerController: UIViewController {
     public var viewPageBar: ViewPageBar!
+    var pagerTabController: PagerTabController!
     private var style: StyleCustomizable!
     private var viewPagers: [ViewPager] = []
     public var pageDidAppear: ((_ toPage: UIViewController, _ index: Int) -> Void)?
     public var didSelected: ((_ index: Int) -> Void)?
+    public var selectedIndex: Int? {
+        didSet {
+            self.pagerTabController.viewPageBar(viewPageBar, selectedIndex: selectedIndex ?? 0)
+        }
+    }
+    
     
     public init(_ pagers: [ViewPager]? = [], pagerBar style: StyleCustomizable? = nil) {
         super.init(nibName: nil, bundle: nil)
@@ -27,7 +34,7 @@ public class ViewPagerController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        let pagerTabController = PagerTabController(viewPagers.flatMap({$0.controller}))
+        pagerTabController = PagerTabController(viewPagers.flatMap({$0.controller}))
         pagerTabController.pageDidAppear = self.pageDidAppear
         pagerTabController.didSelected = self.didSelected
         pagerTabController.tabBar.isHidden = style.isShowPageBar

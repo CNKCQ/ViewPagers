@@ -60,15 +60,17 @@ class ViewController: UIViewController {
             make.top.equalTo(self.view.snp.top).offset(200)
             make.bottom.equalTo(self.view.snp.bottom)
         }
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(rightAction))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    @objc func rightAction() {
         let titles = ["待接单1", "代取件2", "配送中5", "已完成4", "待处理2"]
         viewPagerController.viewPageBar.update(titles)
+        viewPagerController.selectedIndex = 3
     }
     
     lazy var viewPagers: [ViewPager] =  {
