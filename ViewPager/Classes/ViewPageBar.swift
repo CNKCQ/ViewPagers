@@ -34,11 +34,11 @@ public class ViewPageBar: UIView {
         return bottomLine
     }()
     
-    fileprivate lazy var normalColor : (r : CGFloat, g : CGFloat, b : CGFloat) = self.rgb(self.style.normalColor)
+    fileprivate lazy var normalColor: (r: CGFloat, g: CGFloat, b: CGFloat) = self.rgb(self.style.normalColor)
     
-    fileprivate lazy var selectedColor : (r : CGFloat, g : CGFloat, b : CGFloat) = self.rgb(self.style.selectedColor)
+    fileprivate lazy var selectedColor: (r: CGFloat, g: CGFloat, b: CGFloat) = self.rgb(self.style.selectedColor)
     
-    init(frame: CGRect, titles : [String], style : StyleCustomizable) {
+    init(frame: CGRect, titles: [String], style: StyleCustomizable) {
         super.init(frame: frame)
         
         self.titles = titles
@@ -59,7 +59,9 @@ extension ViewPageBar {
     fileprivate func setupUI() {
         backgroundColor = style.titleBgColor
         setupTitleLabels()
+        
         setupTitleLabelsPosition()
+        
         if style.isShowBottomLine {
             setupBottomLine()
         }
@@ -113,13 +115,16 @@ extension ViewPageBar {
     }
     
     fileprivate func setupBottomLine() {
-        addSubview(bottomLine)
         guard let firstTitleLabel = titleLabels.first else {
             return
         }
+        addSubview(bottomLine)
         bottomLine.snp.makeConstraints { (make) in
-            make.left.right.width.equalTo(firstTitleLabel)
-            make.top.equalTo(firstTitleLabel.snp.bottom).offset(-bottomoffset)
+            make.centerX.equalTo(firstTitleLabel.snp.centerX)
+            make.width.equalTo(firstTitleLabel.snp.width)
+                .offset(-self.style.bottomLineMargin)
+            make.top.equalTo(firstTitleLabel.snp.bottom)
+                .offset(-bottomoffset)
             make.height.equalTo(style.bottomLineH)
         }
     }
@@ -127,6 +132,7 @@ extension ViewPageBar {
 
 
 extension ViewPageBar {
+    
     @objc fileprivate func titleLabelClick(_ tap : UITapGestureRecognizer) {
         guard let currentLabel = tap.view as? UILabel else { return }
         if currentLabel.tag == currentIndex { return }
@@ -139,8 +145,11 @@ extension ViewPageBar {
         if style.isShowBottomLine {
             UIView.animate(withDuration: 0.15, animations: {
                 self.bottomLine.snp.remakeConstraints({ (make) in
-                    make.left.right.equalTo(currentLabel)
-                    make.top.equalTo(currentLabel.snp.bottom).offset(-self.bottomoffset)
+                    make.centerX.equalTo(currentLabel.snp.centerX)
+                    make.width.equalTo(currentLabel.snp.width)
+                        .offset(-self.style.bottomLineMargin)
+                    make.top.equalTo(currentLabel.snp.bottom)
+                        .offset(-self.bottomoffset)
                     make.height.equalTo(self.style.bottomLineH)
                 })
                 self.layoutIfNeeded()
@@ -156,17 +165,19 @@ extension ViewPageBar {
         if style.isShowBottomLine {
             UIView.animate(withDuration: 0.15, animations: {
                 self.bottomLine.snp.remakeConstraints({ (make) in
-                    make.left.equalTo(currentLabel.snp.left)
+                    make.centerX.equalTo(currentLabel.snp.centerX)
                     make.width.equalTo(currentLabel.snp.width)
-                    make.top.equalTo(currentLabel.snp.bottom).offset(-self.bottomoffset)
+                        .offset(-self.style.bottomLineMargin)
+                    make.top.equalTo(currentLabel.snp.bottom)
+                        .offset(-self.bottomoffset)
                     make.height.equalTo(self.style.bottomLineH)
                 })
                 self.layoutIfNeeded()
             })
         }
-        currentLabel.textColor = UIColor(r: selectedColor.0, g: selectedColor.1, b: selectedColor.2)
+        currentLabel.textColor = style.selectedColor
         self.titleLabels.filter({$0 != currentLabel})
-            .forEach { $0.textColor = UIColor(r: normalColor.0, g: normalColor.1, b: normalColor.2)}
+            .forEach { $0.textColor = style.normalColor }
     }
     
     func updateProgress(_ progress : CGFloat, fromIndex : Int, toIndex : Int) {
@@ -180,13 +191,14 @@ extension ViewPageBar {
         targetLabel.textColor = UIColor(r: normalColor.0 + colorDelta.0 * progress, g: normalColor.1 + colorDelta.1 * progress, b: normalColor.2 + colorDelta.2 * progress)
 
         currentIndex = toIndex
-        let bottomLineFromX = sourceLabel.frame.origin.x
-        let bottomLineToX = toIndex > fromIndex ? bottomLineFromX + progress * targetLabel.frame.size.width : bottomLineFromX - progress * targetLabel.frame.size.width
+        let bottomLineFromCenterX = sourceLabel.center.x
+        let bottomLineToCenterX = toIndex > fromIndex ? bottomLineFromCenterX + progress * targetLabel.frame.size.width : bottomLineFromCenterX - progress * targetLabel.frame.size.width
         if style.isShowBottomLine {
             UIView.animate(withDuration: 0.15, animations: {
                 self.bottomLine.snp.remakeConstraints({ (make) in
-                    make.left.equalTo(bottomLineToX)
+                    make.centerX.equalTo(bottomLineToCenterX)
                     make.width.equalTo(targetLabel.snp.width)
+                        .offset(-self.style.bottomLineMargin)
                     make.top.equalTo(targetLabel.snp.bottom).offset(-self.bottomoffset)
                     make.height.equalTo(self.style.bottomLineH)
                 })

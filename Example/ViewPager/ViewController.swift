@@ -13,11 +13,23 @@ import ViewPagers
 struct CustomPagerBarStyle: StyleCustomizable {
     
     var titleBgColor: UIColor {
+        return UIColor.gray
+    }
+    
+    var normalColor: UIColor {
+        return UIColor.white.withAlphaComponent(0.6)
+    }
+    
+    var selectedColor: UIColor {
         return UIColor.white
     }
     
     var isShowPageBar: Bool {
         return true
+    }
+    
+    var bottomLineMargin: CGFloat {
+        return 40
     }
 }
 
