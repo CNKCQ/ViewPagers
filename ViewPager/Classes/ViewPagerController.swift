@@ -37,9 +37,9 @@ public class ViewPagerController: UIViewController {
         pagerTabController = PagerTabController(viewPagers.flatMap({$0.controller}))
         pagerTabController.pageDidAppear = self.pageDidAppear
         pagerTabController.didSelected = self.didSelected
-        pagerTabController.tabBar.isHidden = style.isShowPageBar
         addChildViewController(pagerTabController)
         view.addSubview(pagerTabController.view)
+        pagerTabController.tabBar.isHidden = style.isShowPageBar
         let titleH : CGFloat = style.titleHeight
         viewPageBar = ViewPageBar(frame: .zero, titles: viewPagers.flatMap({$0.title}), style : style)
         viewPageBar.delegate = pagerTabController

@@ -61,6 +61,8 @@ class ViewController: UIViewController {
             make.bottom.equalTo(self.view.snp.bottom)
         }
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(rightAction))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.action, target: self, action: #selector(leftAction))
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +73,13 @@ class ViewController: UIViewController {
         let titles = ["待接单1", "代取件2", "配送中5", "已完成4", "待处理2"]
         viewPagerController.viewPageBar.update(titles)
         viewPagerController.selectedIndex = 3
+    }
+    
+    @objc func leftAction() {
+        let alert = UIAlertController(title: "viewpager", message: "welcome to the appliction", preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "ok", style: .cancel, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
     }
     
     lazy var viewPagers: [ViewPager] =  {

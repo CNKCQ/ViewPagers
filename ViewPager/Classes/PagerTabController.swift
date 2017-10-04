@@ -50,7 +50,13 @@ class PagerTabController: UITabBarController {
     
     @objc func onPan(gesture: UIPanGestureRecognizer)  {
         
-        let tranlationX = gesture.translation(in: self.view).x
+        let tranlation = gesture.translation(in: self.view)
+        let tranlationX = tranlation.x
+        let tranlationY = tranlation.y
+        if fabs(tranlationY) > fabs(tranlationX) {
+            self.viewPagerTabBarDelete?.interactiveTransition.cancel()
+            return
+        }
         let progress = fabs(tranlationX/self.view.frame.size.width)
         
         switch gesture.state {
