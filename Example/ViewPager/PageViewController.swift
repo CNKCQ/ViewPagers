@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import SnapKit
 
 class PageViewController: UIViewController {
+    var titleLabel: UILabel {
+        return UILabel()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.random
+        titleLabel.frame = view.bounds
+        view.addSubview(titleLabel)
     }
 }
 

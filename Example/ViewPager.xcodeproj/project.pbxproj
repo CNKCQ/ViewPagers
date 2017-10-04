@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		043DC4831F09445900CE2ECF /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DC4821F09445900CE2ECF /* PageViewController.swift */; };
+		432FC098997AD05D797F13BB /* Pods_ViewPager_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DED5968342618C0B9D8C80C /* Pods_ViewPager_Example.framework */; };
+		4580056223B1203B3F4F3C0E /* Pods_ViewPager_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BE9FCA4D2439B3CFE376C79 /* Pods_ViewPager_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
-		7126947853E1B83156B226E1 /* Pods_ViewPager_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F998A9AF8C58314EC734DAF5 /* Pods_ViewPager_Tests.framework */; };
-		E6E262A031ACD965193E4684 /* Pods_ViewPager_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA74F803CD4B08D632F5FC7 /* Pods_ViewPager_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,8 +30,8 @@
 
 /* Begin PBXFileReference section */
 		043DC4821F09445900CE2ECF /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
-		0EA74F803CD4B08D632F5FC7 /* Pods_ViewPager_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ViewPager_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B7EA4DD40C1A5426622E42F /* Pods-ViewPager_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Example/Pods-ViewPager_Example.release.xcconfig"; sourceTree = "<group>"; };
+		0BE9FCA4D2439B3CFE376C79 /* Pods_ViewPager_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ViewPager_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DED5968342618C0B9D8C80C /* Pods_ViewPager_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ViewPager_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* ViewPager_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewPager_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,13 +42,13 @@
 		607FACE51AFB9204008FA782 /* ViewPager_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ViewPager_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		86ADA2E72B5559BAA52AAFFD /* Pods-ViewPager_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Tests/Pods-ViewPager_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		951592997C59F81A5A2BF07C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		952D46CEF7ED5EFEAA43C4EE /* Pods-ViewPager_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Tests/Pods-ViewPager_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		B28B301D2B17E7FAA7A3FFCB /* Pods-ViewPager_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Tests/Pods-ViewPager_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BFDF1863F393400A0A8A30A2 /* ViewPager.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ViewPager.podspec; path = ../ViewPager.podspec; sourceTree = "<group>"; };
 		CE327AE6578CE6B7FBCD83B0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		D7137C23EA9EB50276F2A776 /* Pods-ViewPager_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Tests/Pods-ViewPager_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		EA3337FED6009A0FB44D30A2 /* Pods-ViewPager_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Example/Pods-ViewPager_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		F998A9AF8C58314EC734DAF5 /* Pods_ViewPager_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ViewPager_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4D67F802A3753E53ED70FC6 /* Pods-ViewPager_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Example/Pods-ViewPager_Example.release.xcconfig"; sourceTree = "<group>"; };
+		F4351EFFFFDBAD3FC75CA16E /* Pods-ViewPager_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPager_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPager_Example/Pods-ViewPager_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6E262A031ACD965193E4684 /* Pods_ViewPager_Example.framework in Frameworks */,
+				432FC098997AD05D797F13BB /* Pods_ViewPager_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,24 +64,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7126947853E1B83156B226E1 /* Pods_ViewPager_Tests.framework in Frameworks */,
+				4580056223B1203B3F4F3C0E /* Pods_ViewPager_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5A6D29F78BD159A7EA87E66A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				EA3337FED6009A0FB44D30A2 /* Pods-ViewPager_Example.debug.xcconfig */,
-				5B7EA4DD40C1A5426622E42F /* Pods-ViewPager_Example.release.xcconfig */,
-				952D46CEF7ED5EFEAA43C4EE /* Pods-ViewPager_Tests.debug.xcconfig */,
-				D7137C23EA9EB50276F2A776 /* Pods-ViewPager_Tests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -89,8 +78,8 @@
 				607FACD21AFB9204008FA782 /* Example for ViewPager */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
-				5A6D29F78BD159A7EA87E66A /* Pods */,
-				9451D3C1A35C157405980A66 /* Frameworks */,
+				7A54B44BD92FA0B1F1503F2C /* Pods */,
+				DABB16F92C796B34ABAA5418 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -153,11 +142,22 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		9451D3C1A35C157405980A66 /* Frameworks */ = {
+		7A54B44BD92FA0B1F1503F2C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0EA74F803CD4B08D632F5FC7 /* Pods_ViewPager_Example.framework */,
-				F998A9AF8C58314EC734DAF5 /* Pods_ViewPager_Tests.framework */,
+				F4351EFFFFDBAD3FC75CA16E /* Pods-ViewPager_Example.debug.xcconfig */,
+				D4D67F802A3753E53ED70FC6 /* Pods-ViewPager_Example.release.xcconfig */,
+				B28B301D2B17E7FAA7A3FFCB /* Pods-ViewPager_Tests.debug.xcconfig */,
+				86ADA2E72B5559BAA52AAFFD /* Pods-ViewPager_Tests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DABB16F92C796B34ABAA5418 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1DED5968342618C0B9D8C80C /* Pods_ViewPager_Example.framework */,
+				0BE9FCA4D2439B3CFE376C79 /* Pods_ViewPager_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -169,12 +169,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "ViewPager_Example" */;
 			buildPhases = (
-				886B659613DACA6CB42E2ABB /* [CP] Check Pods Manifest.lock */,
+				F61DC5A86914D55EC2A5E48B /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				A5C9C8002EDA05EB78FC4210 /* [CP] Embed Pods Frameworks */,
-				132F7FF39E099F7F9B93C6FC /* [CP] Copy Pods Resources */,
+				F91C3FC433FEA1A2C48F68FA /* [CP] Embed Pods Frameworks */,
+				112DB597BB72433B24A1FE32 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -189,12 +189,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "ViewPager_Tests" */;
 			buildPhases = (
-				B5FA4B7950F65063B0995DD2 /* [CP] Check Pods Manifest.lock */,
+				9EAFA4FB026164011C051477 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				6D1598F518087AC2E5D7810C /* [CP] Embed Pods Frameworks */,
-				7F23FA44B07B35993B53796A /* [CP] Copy Pods Resources */,
+				86C905D6F87602F33F2CB6E1 /* [CP] Embed Pods Frameworks */,
+				E43DB902778536B238066D39 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -218,10 +218,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = GTVM2F95ZD;
 						LastSwiftMigration = 0820;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = GTVM2F95ZD;
 						LastSwiftMigration = 0820;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -267,7 +269,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		132F7FF39E099F7F9B93C6FC /* [CP] Copy Pods Resources */ = {
+		112DB597BB72433B24A1FE32 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -282,7 +284,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ViewPager_Example/Pods-ViewPager_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6D1598F518087AC2E5D7810C /* [CP] Embed Pods Frameworks */ = {
+		86C905D6F87602F33F2CB6E1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -297,7 +299,25 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ViewPager_Tests/Pods-ViewPager_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7F23FA44B07B35993B53796A /* [CP] Copy Pods Resources */ = {
+		9EAFA4FB026164011C051477 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ViewPager_Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E43DB902778536B238066D39 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -312,49 +332,42 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ViewPager_Tests/Pods-ViewPager_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		886B659613DACA6CB42E2ABB /* [CP] Check Pods Manifest.lock */ = {
+		F61DC5A86914D55EC2A5E48B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ViewPager_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A5C9C8002EDA05EB78FC4210 /* [CP] Embed Pods Frameworks */ = {
+		F91C3FC433FEA1A2C48F68FA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ViewPager_Example/Pods-ViewPager_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ViewPager/ViewPager.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ViewPager.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ViewPager_Example/Pods-ViewPager_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B5FA4B7950F65063B0995DD2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -452,6 +465,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -491,42 +505,48 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA3337FED6009A0FB44D30A2 /* Pods-ViewPager_Example.debug.xcconfig */;
+			baseConfigurationReference = F4351EFFFFDBAD3FC75CA16E /* Pods-ViewPager_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GTVM2F95ZD;
 				INFOPLIST_FILE = ViewPager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EA4DD40C1A5426622E42F /* Pods-ViewPager_Example.release.xcconfig */;
+			baseConfigurationReference = D4D67F802A3753E53ED70FC6 /* Pods-ViewPager_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GTVM2F95ZD;
 				INFOPLIST_FILE = ViewPager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 952D46CEF7ED5EFEAA43C4EE /* Pods-ViewPager_Tests.debug.xcconfig */;
+			baseConfigurationReference = B28B301D2B17E7FAA7A3FFCB /* Pods-ViewPager_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = GTVM2F95ZD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -545,8 +565,9 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D7137C23EA9EB50276F2A776 /* Pods-ViewPager_Tests.release.xcconfig */;
+			baseConfigurationReference = 86ADA2E72B5559BAA52AAFFD /* Pods-ViewPager_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = GTVM2F95ZD;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
