@@ -13,6 +13,6 @@ class TabTController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.random
-        print("third")
+//        print("third")
     }
 }

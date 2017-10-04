@@ -13,6 +13,6 @@ class TabSController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.random
-        print("second")
+//        print("second")
     }
 }

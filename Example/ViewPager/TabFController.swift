@@ -13,6 +13,6 @@ class TabFController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.random
-        print("first")
+//        print("first")
     }
 }
