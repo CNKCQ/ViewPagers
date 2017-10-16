@@ -11,6 +11,11 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+Xcode 8+ , Swift 3+
+
+##### :eyes: See also:
+![ViewPager_display](http://upload-images.jianshu.io/upload_images/121208-6302e02c0a7637d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/500)
+
 ## Installation
 
 ViewPager is available through [CocoaPods](http://cocoapods.org). To install
