@@ -11,28 +11,28 @@ import UIKit
 
 public protocol StyleCustomizable {
     
-    /// 是否是滚动的Title
+    /// pageBarItem should be scroll
     var isScrollEnable : Bool { get }
     
-    /// 普通Title颜色
+    /// the color of deselected item
     var normalColor : UIColor { get }
     
-    /// 选中Title颜色
+    /// the color of the selected item
     var selectedColor : UIColor { get }
     
-    /// 滚动Title的字体间距
+    /// the margin of the pageBarItem
     var titleMargin : CGFloat { get }
     
-    /// viewPageBar的高度
+    /// viewPageBar's height
     var titleHeight : CGFloat { get }
     
-    /// viewPageBar的宽度
+    /// title width
     var titleWidth : CGFloat { get }
     
     /// viewPageBar's backgroundColor
     var titleBgColor : UIColor { get }
     
-    /// Title字体大小
+    /// the item text font
     var font : UIFont { get }
 
     
@@ -48,8 +48,9 @@ public protocol StyleCustomizable {
     /// 底部滚动条的宽度
     var bottomLineW: CGFloat { get }
     
-    var isShowPageBar: Bool { get }
+    var bottomLineOffset: CGFloat { get }
     
+    /// should split the screen width
     var isSplit: Bool { get }
     
     var isAnimateWithProgress: Bool { get }
@@ -116,12 +117,11 @@ public extension StyleCustomizable {
     var bottomLineW: CGFloat {
         return 50
     }
-
     
-    var isShowPageBar: Bool {
-        return true
+    var bottomLineOffset: CGFloat {
+        return 5
     }
-    
+
     var isSplit: Bool {
         return false
     }

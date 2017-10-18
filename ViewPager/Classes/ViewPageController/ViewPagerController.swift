@@ -13,12 +13,21 @@ public class ViewPagerController: UIViewController {
     fileprivate var titles : [String]!
     fileprivate var style : StyleCustomizable!
     fileprivate var childVcs : [UIViewController]!
-    fileprivate weak var parentVc : UIViewController!
     
     fileprivate var viewPageBar : ViewPageBar!
     fileprivate var contentView : PageContentView!
     public var didselected: ((_ viewPageBar: ViewPageBar, _ index: Int) -> Void)?
     public var pageViewDidAppear: ((_ viewController: UIViewController, _ index: Int) -> Void)?
+    
+    public var isViewPageBarHidden: Bool = false {
+        didSet {
+            let height: CGFloat = isViewPageBarHidden ? 0 : self.viewPageBar.frame.height
+            self.viewPageBar.snp.updateConstraints { (make) in
+                make.height.equalTo(height)
+            }
+            self.viewPageBar.superview?.layoutIfNeeded()
+        }
+    }
 
     public convenience init(frame: CGRect, titles : [String], style : StyleCustomizable, childVcs : [UIViewController]) {
         self.init(nibName: nil, bundle: nil)
@@ -27,9 +36,8 @@ public class ViewPagerController: UIViewController {
         self.style = style
         self.titles = titles
         self.childVcs = childVcs
-        self.parentVc = self
-        parentVc.automaticallyAdjustsScrollViewInsets = false
-        setupUI()
+        self.automaticallyAdjustsScrollViewInsets = false
+        setupContentView()
     }
     
     public override func viewWillLayoutSubviews() {
@@ -53,7 +61,7 @@ public class ViewPagerController: UIViewController {
 
 extension ViewPagerController {
     
-    fileprivate func setupUI() {
+    fileprivate func setupContentView() {
         let titleH : CGFloat = style.titleHeight
         viewPageBar = ViewPageBar(frame: .zero, titles: titles, style : style)
         viewPageBar.delegate = self
@@ -63,7 +71,7 @@ extension ViewPagerController {
             make.height.equalTo(titleH)
             make.top.equalTo(self.view.snp.top)
         }
-        contentView = PageContentView(frame: .zero, childVcs: childVcs, parentViewController: parentVc)
+        contentView = PageContentView(frame: .zero, childViewControllers: childVcs, parentViewController: self)
         contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         contentView.delegate = self
         view.addSubview(contentView)
@@ -74,8 +82,7 @@ extension ViewPagerController {
     }
 }
 
-
-// MARK:- 设置ContentView的代理
+// MARK: - ContentViewDelegate
 extension ViewPagerController : ContentViewDelegate {
     
     func contentView(_ contentView: PageContentView, progress: CGFloat, sourceIndex: Int, targetIndex: Int) {
@@ -87,8 +94,7 @@ extension ViewPagerController : ContentViewDelegate {
     }
 }
 
-
-// MARK:- 设置viewPageBar的代理
+// MARK: - ViewPageBarDelegate
 extension ViewPagerController : ViewPageBarDelegate {
     
     func viewPageBar(_ viewPageBar: ViewPageBar, selectedIndex index: Int) {

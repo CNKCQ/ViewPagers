@@ -45,7 +45,7 @@ public class ViewPageBar: UIView {
         
         self.titles = titles
         self.style = style
-        setupUI()
+        setupCollectionView()
         self.clipsToBounds = true
     }
     
@@ -63,7 +63,7 @@ public class ViewPageBar: UIView {
 // MARK: - randering ui
 extension ViewPageBar {
     
-    fileprivate func setupUI() {
+    fileprivate func setupCollectionView() {
         backgroundColor = style.titleBgColor
         let layout = ViewPageBarLayout(self)
         collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: layout)
@@ -88,7 +88,7 @@ extension ViewPageBar {
             return
         }
         cell.titleLabel.textColor = style.selectedColor
-        self.bottomLine.frame = CGRect(x: (cell.frame.width - style.bottomLineW) / 2, y: cell.frame.height - style.bottomLineH, width: style.bottomLineW, height: style.bottomLineH)
+        self.bottomLine.frame = CGRect(x: (cell.frame.width - style.bottomLineW) / 2, y: cell.frame.height - style.bottomLineH - style.bottomLineOffset, width: style.bottomLineW, height: style.bottomLineH)
     }
     
     func frmaeOfCellAt(_ index: Int) -> CGRect {
@@ -125,7 +125,7 @@ extension ViewPageBar: UICollectionViewDelegate {
         toCell?.titleLabel.textColor = style.selectedColor
         let toFrame: CGRect = self.frmaeOfCellAt(indexPath.item)
         UIView.animate(withDuration: 0.25) {
-            self.bottomLine.frame = CGRect(x: toFrame.origin.x + (toFrame.width - self.bottomLine.frame.width) / 2, y: self.bottomLine.frame.origin.y, width: self.bottomLine.frame.width, height: self.bottomLine.frame.width)
+            self.bottomLine.frame = CGRect(x: toFrame.origin.x + (toFrame.width - self.bottomLine.frame.width) / 2, y: self.bottomLine.frame.origin.y, width: self.bottomLine.frame.width, height: self.bottomLine.frame.height)
         }
         self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
@@ -177,7 +177,7 @@ extension ViewPageBar {
         } else {
             let toFrame = frmaeOfCellAt(toIndex)
             UIView.animate(withDuration: 0.25) {
-                self.bottomLine.frame = CGRect(x: toFrame.origin.x + (toFrame.width - self.bottomLine.frame.width) / 2, y: self.bottomLine.frame.origin.y, width: self.bottomLine.frame.width, height: self.bottomLine.frame.width)
+                self.bottomLine.frame = CGRect(x: toFrame.origin.x + (toFrame.width - self.bottomLine.frame.width) / 2, y: self.bottomLine.frame.origin.y, width: self.bottomLine.frame.width, height: self.bottomLine.frame.height)
             }
         }
         self.collectionView.scrollToItem(at: IndexPath(item: toIndex, section: 0), at: .centeredHorizontally, animated: true)

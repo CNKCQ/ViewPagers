@@ -32,9 +32,19 @@ struct CustomPagerBarStyle: StyleCustomizable {
         return false
     }
     
+    var bottomLineH: CGFloat {
+        return 1
+    }
+    
+    var titleMargin: CGFloat {
+        return 0
+    }
+    
 }
 
 class ViewController: UIViewController {
+    
+    var viewPagerController: ViewPagerController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +53,7 @@ class ViewController: UIViewController {
         let style = CustomPagerBarStyle()
         let titles =
 //            ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
+//        ["待接单", "代取件"]
         ["待接单", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理"]
         var childVcs = [UIViewController]()
         for title in titles {
@@ -51,7 +62,7 @@ class ViewController: UIViewController {
             childVcs.append(anchorVc)
         }
         edgesForExtendedLayout = []
-        let viewPagerController = ViewPagerController(frame: .zero, titles: titles, style: style, childVcs: childVcs)
+        viewPagerController = ViewPagerController(frame: .zero, titles: titles, style: style, childVcs: childVcs)
         addChildViewController(viewPagerController)
         view.addSubview(viewPagerController.view)
         viewPagerController.didselected = { (viewPageBar, index) in
