@@ -15,8 +15,10 @@ public class ViewPagerController: UIViewController {
     fileprivate var childVcs : [UIViewController]!
     fileprivate weak var parentVc : UIViewController!
     
-    fileprivate var titleView : ViewPageBar!
+    fileprivate var viewPageBar : ViewPageBar!
     fileprivate var contentView : PageContentView!
+    public var didselected: ((_ viewPageBar: ViewPageBar, _ index: Int) -> Void)?
+    public var pageViewDidAppear: ((_ viewController: UIViewController, _ index: Int) -> Void)?
 
     public convenience init(frame: CGRect, titles : [String], style : StyleCustomizable, childVcs : [UIViewController]) {
         self.init(nibName: nil, bundle: nil)
@@ -33,18 +35,18 @@ public class ViewPagerController: UIViewController {
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         contentView.viewWillLayoutSubviews()
-        titleView.viewWillLayoutSubviews()
-        contentView.setCurrentIndex(titleView.currentIndex)
+        viewPageBar.viewWillLayoutSubviews()
+        contentView.setCurrentIndex(viewPageBar.currentIndex)
     }
         
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if titleView.style.isShowBottomLine == true {
-            titleView.setupBottomLine()
+        if viewPageBar.style.isShowBottomLine == true {
+            viewPageBar.setupBottomLine()
         }
-        let indexPathForFirst = IndexPath(item: titleView.currentIndex, section: 0)
-        titleView.collectionView.selectItem(at: indexPathForFirst, animated: false, scrollPosition: .left)
-        titleView.collectionView(titleView.collectionView, didSelectItemAt: indexPathForFirst)
+        let indexPathForFirst = IndexPath(item: viewPageBar.currentIndex, section: 0)
+        viewPageBar.collectionView.selectItem(at: indexPathForFirst, animated: false, scrollPosition: .left)
+        viewPageBar.collectionView(viewPageBar.collectionView, didSelectItemAt: indexPathForFirst)
     }
 }
 
@@ -53,10 +55,10 @@ extension ViewPagerController {
     
     fileprivate func setupUI() {
         let titleH : CGFloat = style.titleHeight
-        titleView = ViewPageBar(frame: .zero, titles: titles, style : style)
-        titleView.delegate = self
-        view.addSubview(titleView)
-        titleView.snp.makeConstraints { (make) in
+        viewPageBar = ViewPageBar(frame: .zero, titles: titles, style : style)
+        viewPageBar.delegate = self
+        view.addSubview(viewPageBar)
+        viewPageBar.snp.makeConstraints { (make) in
             make.right.left.equalTo(self.view)
             make.height.equalTo(titleH)
             make.top.equalTo(self.view.snp.top)
@@ -67,7 +69,7 @@ extension ViewPagerController {
         view.addSubview(contentView)
         contentView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalTo(self.view)
-            make.top.equalTo(self.titleView.snp.bottom)
+            make.top.equalTo(self.viewPageBar.snp.bottom)
         }
     }
 }
@@ -77,18 +79,21 @@ extension ViewPagerController {
 extension ViewPagerController : ContentViewDelegate {
     
     func contentView(_ contentView: PageContentView, progress: CGFloat, sourceIndex: Int, targetIndex: Int) {
-        titleView.updateProgress(progress, fromIndex: sourceIndex, toIndex: targetIndex)
+        viewPageBar.updateProgress(progress, fromIndex: sourceIndex, toIndex: targetIndex)
     }
     
-    func contentViewEndScroll(_ contentView: PageContentView) {    }
+    func contentViewEndScroll(_ contentView: PageContentView) {
+        self.pageViewDidAppear?(self.childVcs[self.viewPageBar.currentIndex], self.viewPageBar.currentIndex)
+    }
 }
 
 
-// MARK:- 设置TitleView的代理
+// MARK:- 设置viewPageBar的代理
 extension ViewPagerController : ViewPageBarDelegate {
     
     func viewPageBar(_ viewPageBar: ViewPageBar, selectedIndex index: Int) {
         contentView.setCurrentIndex(index)
+        self.didselected?(viewPageBar, index)
     }
 }
 

@@ -54,6 +54,12 @@ class ViewController: UIViewController {
         let viewPagerController = ViewPagerController(frame: .zero, titles: titles, style: style, childVcs: childVcs)
         addChildViewController(viewPagerController)
         view.addSubview(viewPagerController.view)
+        viewPagerController.didselected = { (viewPageBar, index) in
+            print("🌹", viewPageBar, index, "🌹")
+        }
+        viewPagerController.pageViewDidAppear = { (viewController, index) in
+            print("🌹", viewController, index, "🌹")
+        }
         viewPagerController.view.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
