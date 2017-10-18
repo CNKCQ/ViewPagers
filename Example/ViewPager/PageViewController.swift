@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 class PageViewController: UIViewController {
+    
     var titleLabel: UILabel {
         return UILabel()
     }

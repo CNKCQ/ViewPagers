@@ -10,15 +10,40 @@ import UIKit
 import ViewPager
 import SnapKit
 
+struct CustomPagerBarStyle: StyleCustomizable {
+    
+    var titleBgColor: UIColor {
+        return UIColor.white
+    }
+    
+    var isShowPageBar: Bool {
+        return true
+    }
+    
+    var isSplit: Bool {
+        return false
+    }
+    
+    var bottomLineW: CGFloat {
+        return 30
+    }
+    
+    var isAnimateWithProgress: Bool {
+        return false
+    }
+    
+}
+
 class ViewController: UIViewController {
-    var pageView: PageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // 2.创建主题内容
-        let style = TitleStyle(isShowBottomLine: true, bottomLineColor: .orange, bottomLineH: 5)
-        let titles = ["待接单", "代取件", "配送中", "已完成", "待处理"]
+        let style = CustomPagerBarStyle()
+        let titles =
+//            ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
+        ["待接单", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理"]
         var childVcs = [UIViewController]()
         for title in titles {
             let anchorVc = PageViewController()
@@ -26,17 +51,12 @@ class ViewController: UIViewController {
             childVcs.append(anchorVc)
         }
         edgesForExtendedLayout = []
-        pageView = PageView(frame: .zero, titles: titles, style: style, childVcs: childVcs, parentVc: self)
-        view.addSubview(pageView)
-        pageView.snp.makeConstraints { (make) in
+        let viewPagerController = ViewPagerController(frame: .zero, titles: titles, style: style, childVcs: childVcs)
+        addChildViewController(viewPagerController)
+        view.addSubview(viewPagerController.view)
+        viewPagerController.view.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-
-    }
-    
-    override func viewWillLayoutSubviews() {
-         super.viewWillLayoutSubviews()
-        pageView.viewDidLayoutSubviews() // 横竖屏适配
     }
     
     override func didReceiveMemoryWarning() {
