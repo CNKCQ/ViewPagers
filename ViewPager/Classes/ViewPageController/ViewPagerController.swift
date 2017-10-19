@@ -57,9 +57,6 @@ public class ViewPagerController: UIViewController {
         if viewPageBar.style.isShowBottomLine == true {
             viewPageBar.setupBottomLine()
         }
-        let indexPathForFirst = IndexPath(item: viewPageBar.currentIndex, section: 0)
-        viewPageBar.collectionView.selectItem(at: indexPathForFirst, animated: false, scrollPosition: .left)
-        viewPageBar.collectionView(viewPageBar.collectionView, didSelectItemAt: indexPathForFirst)
     }
 }
 
@@ -96,6 +93,7 @@ extension ViewPagerController : ContentViewDelegate {
     
     func contentViewEndScroll(_ contentView: PageContentView) {
         self.pageViewDidAppear?(self.childVcs[self.viewPageBar.currentIndex], self.viewPageBar.currentIndex)
+        self.viewPageBar.contentViewEndScroll()
     }
 }
 

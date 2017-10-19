@@ -22,13 +22,13 @@ public class ViewPageBar: UIView {
     weak var delegate : ViewPageBarDelegate?
     
     fileprivate var titles : [String]!
+    
     var style : StyleCustomizable!
     
     var collectionView: UICollectionView!
     
     var currentIndex : Int = 0
     var bottomoffset: CGFloat = 5
-    
     
     fileprivate lazy var bottomLine : UIView = {
         let bottomLine = UIView()
@@ -65,8 +65,6 @@ public class ViewPageBar: UIView {
     
 }
 
-
-
 // MARK: - randering ui
 extension ViewPageBar {
     
@@ -87,6 +85,7 @@ extension ViewPageBar {
         collectionView.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
+        collectionView.backgroundColor = style.titleBgColor
     }
     
     func setupBottomLine() {
@@ -102,14 +101,6 @@ extension ViewPageBar {
         let layoutAttributes: UICollectionViewLayoutAttributes? = self.collectionView?.layoutAttributesForItem(at: IndexPath(item: index, section: 0))
         return layoutAttributes?.frame ?? .zero
     }
-    
-    func delay(after: TimeInterval, execute: @escaping () -> Void) {
-        let delayTime = DispatchTime.now() + after
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            execute()
-        }
-    }
-
 
 }
 
@@ -125,7 +116,6 @@ extension ViewPageBar: UICollectionViewDataSource {
         }
         cell.titleLabel.font = style.font
         cell.titleLabel.text = titles[indexPath.item]
-        cell.backgroundColor = .brown
         return cell
     }
 }
@@ -171,8 +161,16 @@ extension ViewPageBar: UICollectionViewDelegateFlowLayout {
 
 extension ViewPageBar {
     
-    func finished(_ fromIndex: Int, toIndex: Int) {
+    func contentViewEndScroll() {
         
+        guard let currentCell = self.collectionView.cellForItem(at: IndexPath(item: currentIndex, section: 0)) else {
+            return
+        }
+        UIView.animate(withDuration: 0.25, animations: {
+            self.bottomLine.center = CGPoint(x: currentCell.center.x, y: self.bottomLine.center.y)
+        }) { (_) in
+            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex, section: 0), at: .centeredHorizontally, animated: true)
+        }
     }
     
     func updateProgress(_ progress : CGFloat, fromIndex : Int, toIndex : Int) {
@@ -189,18 +187,20 @@ extension ViewPageBar {
         targetItem.titleLabel.textColor = UIColor(r: normalColor.0 + colorDelta.0 * progress, g: normalColor.1 + colorDelta.1 * progress, b: normalColor.2 + colorDelta.2 * progress)
 
         currentIndex = toIndex
-        let bottomLineFromCenterX = sourceItem.frame.origin.x
-        let marginWidth: CGFloat = abs(targetItem.center.x - sourceItem.center.x)
+        let bottomLineFromCenterX = sourceItem.center.x
+        let marginWidth: CGFloat = fabs(targetItem.center.x - sourceItem.center.x)
         let progressWidth: CGFloat = progress * (targetItem.frame.width + style.titleMargin)
         let bottomLineToCenterX =  toIndex > fromIndex ? bottomLineFromCenterX + progressWidth : bottomLineFromCenterX - progressWidth
         if style.isAnimateWithProgress {
             self.bottomLine.center = CGPoint(x: bottomLineToCenterX, y: self.bottomLine.center.y)
         } else if progressWidth * 2 > marginWidth {
-            UIView.animate(withDuration: 0.25) {
+            UIView.animate(withDuration: 0.25, animations: {
                 self.bottomLine.center = CGPoint(x: targetItem.center.x, y: self.bottomLine.center.y)
-            }
+
+            }, completion: { (_) in
+                self.collectionView.scrollToItem(at: IndexPath(item: toIndex, section: 0), at: .centeredHorizontally, animated: true)
+            })
         }
-        self.collectionView.scrollToItem(at: IndexPath(item: toIndex, section: 0), at: .centeredHorizontally, animated: true)
     }
 }
 

@@ -21,7 +21,7 @@ struct CustomPagerBarStyle: StyleCustomizable {
     }
     
     var isSplit: Bool {
-        return false
+        return true
     }
     
     var bottomLineW: CGFloat {
@@ -45,19 +45,28 @@ struct CustomPagerBarStyle: StyleCustomizable {
 class ViewController: UIViewController {
     
     var viewPagerController: ViewPagerController!
+    var titles: [String] = [] {
+        didSet {
+            if titles.count < 2 {
+                self.viewPagerController.isViewPageBarHidden = true
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // 2.创建主题内容
         let style = CustomPagerBarStyle()
-        var titles: [String] = []
-//            ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
+        var titles: [String] =
+            ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
 //        ["待接单", "代取件"]
-        for index in 0..<15 {
-            titles.append("Tab \(index)")
-        }
+//        titles.removeAll()
+//        for index in 0..<15 {
+//            titles.append("Tab \(index)")
+//        }
         var childVcs = [UIViewController]()
+        
         for title in titles {
             let anchorVc = PageViewController()
             anchorVc.titleLabel.text = title
@@ -75,6 +84,16 @@ class ViewController: UIViewController {
         }
         viewPagerController.view.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
+        }
+        delay(after: 5) {
+            self.titles = ["hello"]
+        }
+    }
+    
+    func delay(after: TimeInterval, execute: @escaping () -> Void) {
+        let delayTime = DispatchTime.now() + after
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+            execute()
         }
     }
     

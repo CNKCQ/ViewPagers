@@ -7,10 +7,6 @@
 
 import UIKit
 
-enum PagerScrollingDirection {
-    case left
-    case right
-}
 
 @objc protocol ContentViewDelegate : class {
     
@@ -29,7 +25,6 @@ class PageContentView: UIView {
     fileprivate weak var parentVc : UIViewController!
     fileprivate var isForbidScrollDelegate : Bool = false
     fileprivate var startOffsetX : CGFloat = 0
-    var direction: PagerScrollingDirection = .left
     
     public lazy var collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -122,16 +117,13 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        
         isForbidScrollDelegate = false
-        
         startOffsetX = scrollView.contentOffset.x
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
         if isForbidScrollDelegate { return }
-        
         var progress : CGFloat = 0
         var sourceIndex : Int = 0
         var targetIndex : Int = 0
@@ -139,32 +131,25 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
         let currentOffsetX = scrollView.contentOffset.x
         let scrollViewW = scrollView.bounds.width
         if currentOffsetX > startOffsetX { // left dragging
-            self.direction = .left
             progress = currentOffsetX / scrollViewW - floor(currentOffsetX / scrollViewW)
-            
             sourceIndex = Int(currentOffsetX / scrollViewW)
-            
             targetIndex = sourceIndex + 1
             if targetIndex >= childViewControllers.count {
                 targetIndex = childViewControllers.count - 1
             }
-            
             if currentOffsetX - startOffsetX == scrollViewW {
                 progress = 1
                 targetIndex = sourceIndex
+                return
             }
         } else { // right dragging
-            self.direction = .right
             progress = 1 - (currentOffsetX / scrollViewW - floor(currentOffsetX / scrollViewW))
-            
             targetIndex = Int(currentOffsetX / scrollViewW)
-            
             sourceIndex = targetIndex + 1
             if sourceIndex >= childViewControllers.count {
                 sourceIndex = childViewControllers.count - 1
             }
         }
-        
         delegate?.contentView(self, progress: progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
     }
     
@@ -179,9 +164,7 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
 extension PageContentView {
     
     func setCurrentIndex(_ currentIndex : Int) {
-        
         isForbidScrollDelegate = true
-        
         let offsetX = CGFloat(currentIndex) * collectionView.frame.width
         collectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false)
     }
