@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum PagerScrollingDirection {
+    case left
+    case right
+}
+
 @objc protocol ContentViewDelegate : class {
     
     func contentView(_ contentView: PageContentView, progress: CGFloat, sourceIndex : Int, targetIndex : Int)
@@ -24,6 +29,7 @@ class PageContentView: UIView {
     fileprivate weak var parentVc : UIViewController!
     fileprivate var isForbidScrollDelegate : Bool = false
     fileprivate var startOffsetX : CGFloat = 0
+    var direction: PagerScrollingDirection = .left
     
     public lazy var collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -133,6 +139,7 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
         let currentOffsetX = scrollView.contentOffset.x
         let scrollViewW = scrollView.bounds.width
         if currentOffsetX > startOffsetX { // left dragging
+            self.direction = .left
             progress = currentOffsetX / scrollViewW - floor(currentOffsetX / scrollViewW)
             
             sourceIndex = Int(currentOffsetX / scrollViewW)
@@ -147,7 +154,7 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
                 targetIndex = sourceIndex
             }
         } else { // right dragging
-
+            self.direction = .right
             progress = 1 - (currentOffsetX / scrollViewW - floor(currentOffsetX / scrollViewW))
             
             targetIndex = Int(currentOffsetX / scrollViewW)

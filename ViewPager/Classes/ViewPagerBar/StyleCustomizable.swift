@@ -110,7 +110,7 @@ public extension StyleCustomizable {
     
     /// 底部滚动条的高度
     var bottomLineH : CGFloat {
-        return 2
+        return 10
     }
     
     /// 底部滚动条的宽度

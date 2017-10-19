@@ -56,6 +56,13 @@ public class ViewPageBar: UIView {
     func viewWillLayoutSubviews() {
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
+    
+    func viewDidLayoutSubviews() {
+        let indexPath = IndexPath(item: self.currentIndex, section: 0)
+        self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
+        self.collectionView(self.collectionView, didSelectItemAt: indexPath)
+    }
+    
 }
 
 
@@ -95,6 +102,14 @@ extension ViewPageBar {
         let layoutAttributes: UICollectionViewLayoutAttributes? = self.collectionView?.layoutAttributesForItem(at: IndexPath(item: index, section: 0))
         return layoutAttributes?.frame ?? .zero
     }
+    
+    func delay(after: TimeInterval, execute: @escaping () -> Void) {
+        let delayTime = DispatchTime.now() + after
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+            execute()
+        }
+    }
+
 
 }
 
@@ -120,14 +135,17 @@ extension ViewPageBar: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.viewPageBar(self, selectedIndex: indexPath.item)
         let fromCell: PageBarItem? = collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0)) as? PageBarItem
+        
         fromCell?.titleLabel.textColor = style.normalColor
-        let toCell: PageBarItem? = collectionView.cellForItem(at: indexPath) as? PageBarItem
-        toCell?.titleLabel.textColor = style.selectedColor
-        let toFrame: CGRect = self.frmaeOfCellAt(indexPath.item)
+        guard let toCell: PageBarItem = collectionView.cellForItem(at: indexPath) as? PageBarItem else {
+            return
+        }
+        toCell.titleLabel.textColor = style.selectedColor
         UIView.animate(withDuration: 0.25) {
-            self.bottomLine.frame = CGRect(x: toFrame.origin.x + (toFrame.width - self.bottomLine.frame.width) / 2, y: self.bottomLine.frame.origin.y, width: self.bottomLine.frame.width, height: self.bottomLine.frame.height)
+                self.bottomLine.center = CGPoint(x: toCell.center.x, y: self.bottomLine.center.y)
         }
         self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        self.currentIndex = indexPath.item
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -156,28 +174,30 @@ extension ViewPageBar {
     func finished(_ fromIndex: Int, toIndex: Int) {
         
     }
-  
     
     func updateProgress(_ progress : CGFloat, fromIndex : Int, toIndex : Int) {
         
-        let sourceItem = self.collectionView.cellForItem(at: IndexPath(item: fromIndex, section: 0)) as? PageBarItem
-        let targetItem = self.collectionView.cellForItem(at: IndexPath(item: toIndex, section: 0)) as? PageBarItem
+        guard let sourceItem = self.collectionView.cellForItem(at: IndexPath(item: fromIndex, section: 0)) as? PageBarItem else {
+            return
+        }
+        guard let targetItem = self.collectionView.cellForItem(at: IndexPath(item: toIndex, section: 0)) as? PageBarItem else {
+            return
+        }
         let colorDelta = (selectedColor.0 - normalColor.0, selectedColor.1 - normalColor.1, selectedColor.2 - normalColor.2)
 
-        sourceItem?.titleLabel.textColor = UIColor(r: selectedColor.0 - colorDelta.0 * progress, g: selectedColor.1 - colorDelta.1 * progress, b: selectedColor.2 - colorDelta.2 * progress)
-        targetItem?.titleLabel.textColor = UIColor(r: normalColor.0 + colorDelta.0 * progress, g: normalColor.1 + colorDelta.1 * progress, b: normalColor.2 + colorDelta.2 * progress)
+        sourceItem.titleLabel.textColor = UIColor(r: selectedColor.0 - colorDelta.0 * progress, g: selectedColor.1 - colorDelta.1 * progress, b: selectedColor.2 - colorDelta.2 * progress)
+        targetItem.titleLabel.textColor = UIColor(r: normalColor.0 + colorDelta.0 * progress, g: normalColor.1 + colorDelta.1 * progress, b: normalColor.2 + colorDelta.2 * progress)
 
         currentIndex = toIndex
+        let bottomLineFromCenterX = sourceItem.frame.origin.x
+        let marginWidth: CGFloat = abs(targetItem.center.x - sourceItem.center.x)
+        let progressWidth: CGFloat = progress * (targetItem.frame.width + style.titleMargin)
+        let bottomLineToCenterX =  toIndex > fromIndex ? bottomLineFromCenterX + progressWidth : bottomLineFromCenterX - progressWidth
         if style.isAnimateWithProgress {
-            let bottomLineFromX = sourceItem?.frame.origin.x ?? 0
-            let increaseWidth: CGFloat = bottomLineFromX + progress * ((targetItem?.frame.width ?? 0) + style.titleMargin)
-            let reduceWidth: CGFloat = bottomLineFromX - progress * ((targetItem?.frame.width ?? 0) + style.titleMargin)
-            let bottomLineToX = toIndex > fromIndex ? increaseWidth : reduceWidth
-            self.bottomLine.frame = CGRect(x: bottomLineToX, y: self.bottomLine.frame.origin.y, width: self.bottomLine.frame.width, height: self.bottomLine.frame.height)
-        } else {
-            let toFrame = frmaeOfCellAt(toIndex)
+            self.bottomLine.center = CGPoint(x: bottomLineToCenterX, y: self.bottomLine.center.y)
+        } else if progressWidth * 2 > marginWidth {
             UIView.animate(withDuration: 0.25) {
-                self.bottomLine.frame = CGRect(x: toFrame.origin.x + (toFrame.width - self.bottomLine.frame.width) / 2, y: self.bottomLine.frame.origin.y, width: self.bottomLine.frame.width, height: self.bottomLine.frame.height)
+                self.bottomLine.center = CGPoint(x: targetItem.center.x, y: self.bottomLine.center.y)
             }
         }
         self.collectionView.scrollToItem(at: IndexPath(item: toIndex, section: 0), at: .centeredHorizontally, animated: true)

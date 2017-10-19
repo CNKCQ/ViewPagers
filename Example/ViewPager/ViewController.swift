@@ -51,10 +51,12 @@ class ViewController: UIViewController {
 
         // 2.创建主题内容
         let style = CustomPagerBarStyle()
-        let titles =
+        var titles: [String] = []
 //            ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
 //        ["待接单", "代取件"]
-        ["待接单", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理", "代取件了吗", "配送中", "已完成", "待处理"]
+        for index in 0..<15 {
+            titles.append("Tab \(index)")
+        }
         var childVcs = [UIViewController]()
         for title in titles {
             let anchorVc = PageViewController()

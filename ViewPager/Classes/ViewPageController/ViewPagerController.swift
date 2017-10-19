@@ -46,6 +46,11 @@ public class ViewPagerController: UIViewController {
         viewPageBar.viewWillLayoutSubviews()
         contentView.setCurrentIndex(viewPageBar.currentIndex)
     }
+    
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        viewPageBar.viewDidLayoutSubviews()
+    }
         
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
