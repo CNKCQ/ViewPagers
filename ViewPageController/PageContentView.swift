@@ -137,7 +137,7 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
             if targetIndex >= childViewControllers.count {
                 targetIndex = childViewControllers.count - 1
             }
-            if currentOffsetX - startOffsetX == scrollViewW {
+            if currentOffsetX - startOffsetX >= scrollViewW {
                 progress = 1
                 targetIndex = sourceIndex
                 return

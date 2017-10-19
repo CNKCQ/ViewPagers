@@ -191,7 +191,7 @@ extension ViewPageBar {
         let marginWidth: CGFloat = fabs(targetItem.center.x - sourceItem.center.x)
         let progressWidth: CGFloat = progress * (targetItem.frame.width + style.titleMargin)
         let bottomLineToCenterX =  toIndex > fromIndex ? bottomLineFromCenterX + progressWidth : bottomLineFromCenterX - progressWidth
-        if style.isAnimateWithProgress {
+        if style.isAnimateWithProgress, progress < 1 {
             self.bottomLine.center = CGPoint(x: bottomLineToCenterX, y: self.bottomLine.center.y)
         } else if progressWidth * 2 > marginWidth {
             UIView.animate(withDuration: 0.25, animations: {
