@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ViewPager
+import ViewPagers
 import SnapKit
 
 struct CustomPagerBarStyle: StyleCustomizable {
@@ -85,9 +85,9 @@ class ViewController: UIViewController {
         viewPagerController.view.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-        delay(after: 5) {
-            self.titles = ["hello"]
-        }
+//        delay(after: 5) {
+//            self.titles = ["hello"]
+//        }
     }
     
     func delay(after: TimeInterval, execute: @escaping () -> Void) {

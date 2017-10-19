@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:ViewPager.xcodeproj">
+      location = "group:/Users/steve/OpenSources/ViewPager/Example/ViewPagers.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
