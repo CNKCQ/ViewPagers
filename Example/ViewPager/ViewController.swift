@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ViewPager
+import ViewPagers
 import SnapKit
 
 struct CustomPagerBarStyle: StyleCustomizable {
