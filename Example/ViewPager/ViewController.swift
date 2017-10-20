@@ -21,7 +21,7 @@ struct CustomPagerBarStyle: StyleCustomizable {
     }
     
     var isSplit: Bool {
-        return true
+        return false
     }
     
     var bottomLineW: CGFloat {
@@ -48,8 +48,9 @@ class ViewController: UIViewController {
     var titles: [String] = [] {
         didSet {
             if titles.count < 2 {
-                self.viewPagerController.isViewPageBarHidden = true
+                self.viewPagerController?.isViewPageBarHidden = true
             }
+            viewPagerController?.titles = titles
         }
     }
 
@@ -58,13 +59,13 @@ class ViewController: UIViewController {
 
         // 2.创建主题内容
         let style = CustomPagerBarStyle()
-        var titles: [String] =
+        self.titles =
             ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
 //        ["待接单", "代取件"]
-//        titles.removeAll()
-//        for index in 0..<15 {
-//            titles.append("Tab \(index)")
-//        }
+        titles.removeAll()
+        for index in 0..<15 {
+            titles.append("Tab \(index)")
+        }
         var childVcs = [UIViewController]()
         
         for title in titles {
@@ -95,6 +96,15 @@ class ViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: delayTime) {
             execute()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeItems))
+    }
+    
+    @objc func changeItems() {
+        self.titles.removeLast()
     }
     
     override func didReceiveMemoryWarning() {

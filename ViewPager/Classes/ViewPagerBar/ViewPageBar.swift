@@ -21,13 +21,29 @@ public class ViewPageBar: UIView {
     
     weak var delegate : ViewPageBarDelegate?
     
-    fileprivate var titles : [String]!
+    var currentIndex : Int = 0
+    
+    var initailCell: PageBarItem?
+    
+    var titles : [String] = [] {
+        didSet {
+            self.collectionView.reloadData()
+            self.currentIndex = 0
+            self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
+            self.delay(after: 0.001) { [weak self] in
+                guard let `self` = self else {
+                    return
+                }
+                self.setupBottomLine()
+                self.delegate?.viewPageBar(self, selectedIndex: 0)
+            }
+        }
+    }
     
     var style : StyleCustomizable!
     
     var collectionView: UICollectionView!
     
-    var currentIndex : Int = 0
     var bottomoffset: CGFloat = 5
     
     fileprivate lazy var bottomLine : UIView = {
@@ -53,6 +69,13 @@ public class ViewPageBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func delay(after: TimeInterval, execute: @escaping () -> Void) {
+        let delayTime = DispatchTime.now() + after
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+            execute()
+        }
+    }
+    
     func viewWillLayoutSubviews() {
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -62,7 +85,6 @@ public class ViewPageBar: UIView {
         self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
         self.collectionView(self.collectionView, didSelectItemAt: indexPath)
     }
-    
 }
 
 // MARK: - randering ui
@@ -90,7 +112,16 @@ extension ViewPageBar {
     
     func setupBottomLine() {
         self.collectionView.addSubview(bottomLine)
-        guard let cell = self.collectionView(self.collectionView, cellForItemAt: IndexPath(item: 0, section: 0)) as? PageBarItem else {
+        guard let cell = self.collectionView.visibleCells.filter({ ($0 as? PageBarItem)?.titleLabel.text == self.titles.first}).first as? PageBarItem else {
+            return
+        }
+        self.initailCell = cell
+        cell.titleLabel.textColor = style.selectedColor
+        self.bottomLine.frame = CGRect(x: (cell.frame.width - style.bottomLineW) / 2, y: cell.frame.height - style.bottomLineH - style.bottomLineOffset, width: style.bottomLineW, height: style.bottomLineH)
+    }
+    
+    func resetInitailCell() {
+        guard let cell = self.initailCell else {
             return
         }
         cell.titleLabel.textColor = style.selectedColor
@@ -115,6 +146,7 @@ extension ViewPageBar: UICollectionViewDataSource {
             fatalError("not found the right cell")
         }
         cell.titleLabel.font = style.font
+        cell.titleLabel.textColor = style.normalColor
         cell.titleLabel.text = titles[indexPath.item]
         return cell
     }
@@ -125,7 +157,7 @@ extension ViewPageBar: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.viewPageBar(self, selectedIndex: indexPath.item)
         let fromCell: PageBarItem? = collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0)) as? PageBarItem
-        
+
         fromCell?.titleLabel.textColor = style.normalColor
         guard let toCell: PageBarItem = collectionView.cellForItem(at: indexPath) as? PageBarItem else {
             return

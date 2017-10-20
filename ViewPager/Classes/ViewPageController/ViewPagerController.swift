@@ -10,7 +10,11 @@ import UIKit
 
 public class ViewPagerController: UIViewController {
     
-    fileprivate var titles : [String]!
+    public var titles : [String] = [] {
+        didSet {
+            self.viewPageBar?.titles = titles
+        }
+    }
     fileprivate var style : StyleCustomizable!
     fileprivate var childVcs : [UIViewController]!
     
