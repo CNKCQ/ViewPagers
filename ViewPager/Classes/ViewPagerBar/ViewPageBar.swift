@@ -17,17 +17,19 @@ protocol ViewPageBarDelegate : class {
     
 }
 
+
 public class ViewPageBar: UIView {
     
     weak var delegate : ViewPageBarDelegate?
     
     var currentIndex : Int = 0
     
-    var initailCell: PageBarItem?
-    
     var titles : [String] = [] {
         didSet {
             self.collectionView.reloadData()
+            if titles.count < 2 {
+                return
+            }
             self.currentIndex = 0
             self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
             self.delay(after: 0.001) { [weak self] in
@@ -40,9 +42,15 @@ public class ViewPageBar: UIView {
         }
     }
     
-    var style : StyleCustomizable!
+    var style : StyleCustomizable = DefaultPagerStyle() {
+        didSet {
+            backgroundColor = style.titleBgColor
+        }
+    }
     
     var collectionView: UICollectionView!
+    
+    var initailCell: PageBarItem?
     
     var bottomoffset: CGFloat = 5
     
@@ -56,20 +64,24 @@ public class ViewPageBar: UIView {
     
     fileprivate lazy var selectedColor : (r : CGFloat, g : CGFloat, b : CGFloat) = self.rgb(self.style.selectedColor)
     
-    init(frame: CGRect, titles : [String], style : StyleCustomizable) {
-        super.init(frame: frame)
-        
-        self.titles = titles
+    convenience init(frame: CGRect, titles : [String], style : StyleCustomizable) {
+        self.init(frame: frame)
         self.style = style
+        self.titles = titles
         setupCollectionView()
         self.clipsToBounds = true
+    }
+    
+    private override init(frame: CGRect) {
+        super.init(frame: frame)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func delay(after: TimeInterval, execute: @escaping () -> Void) {
+    
+    public func delay(after: TimeInterval, execute: @escaping () -> Void) {
         let delayTime = DispatchTime.now() + after
         DispatchQueue.main.asyncAfter(deadline: delayTime) {
             execute()
@@ -81,6 +93,9 @@ public class ViewPageBar: UIView {
     }
     
     func viewDidLayoutSubviews() {
+        if titles.count < 2 {
+            return
+        }
         let indexPath = IndexPath(item: self.currentIndex, section: 0)
         self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
         self.collectionView(self.collectionView, didSelectItemAt: indexPath)
@@ -91,7 +106,6 @@ public class ViewPageBar: UIView {
 extension ViewPageBar {
     
     fileprivate func setupCollectionView() {
-        backgroundColor = style.titleBgColor
         let layout = ViewPageBarLayout(self)
         collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: layout)
         collectionView.register(PageBarItem.self, forCellWithReuseIdentifier: PageBarItem.reuseIdentifier)
@@ -159,15 +173,19 @@ extension ViewPageBar: UICollectionViewDelegate {
         let fromCell: PageBarItem? = collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0)) as? PageBarItem
 
         fromCell?.titleLabel.textColor = style.normalColor
-        guard let toCell: PageBarItem = collectionView.cellForItem(at: indexPath) as? PageBarItem else {
-            return
-        }
-        toCell.titleLabel.textColor = style.selectedColor
-        UIView.animate(withDuration: 0.25) {
+        delay(after: 0.1) { [weak self] in
+            guard let `self` = self else { return }
+            guard let toCell: PageBarItem = collectionView.cellForItem(at: indexPath) as? PageBarItem else {
+                return
+            }
+            toCell.titleLabel.textColor = self.style.selectedColor
+            UIView.animate(withDuration: 0.25) {
                 self.bottomLine.center = CGPoint(x: toCell.center.x, y: self.bottomLine.center.y)
+            }
+            self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            
+            self.currentIndex = indexPath.item
         }
-        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        self.currentIndex = indexPath.item
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

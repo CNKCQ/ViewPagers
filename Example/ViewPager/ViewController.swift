@@ -10,71 +10,34 @@ import UIKit
 import ViewPagers
 import SnapKit
 
-struct CustomPagerBarStyle: StyleCustomizable {
-    
-    var titleBgColor: UIColor {
-        return UIColor.white
-    }
-    
-    var isShowPageBar: Bool {
-        return true
-    }
-    
-    var isSplit: Bool {
-        return false
-    }
-    
-    var bottomLineW: CGFloat {
-        return 30
-    }
-    
-    var isAnimateWithProgress: Bool {
-        return false
-    }
-    
-    var bottomLineH: CGFloat {
-        return 1
-    }
-    
-    var titleMargin: CGFloat {
-        return 0
-    }
-    
-}
 
 class ViewController: UIViewController {
     
     var viewPagerController: ViewPagerController!
-    var titles: [String] = [] {
+    var pagerItems: [PagerItem] = [] {
         didSet {
-            if titles.count < 2 {
+            if pagerItems.count < 2 {
                 self.viewPagerController?.isViewPageBarHidden = true
             }
-            viewPagerController?.titles = titles
+            self.viewPagerController?.pageItems = pagerItems
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // 2.创建主题内容
-        let style = CustomPagerBarStyle()
-        self.titles =
-            ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
-//        ["待接单", "代取件"]
-        titles.removeAll()
-        for index in 0..<15 {
-            titles.append("Tab \(index)")
-        }
-        var childVcs = [UIViewController]()
         
-        for title in titles {
-            let anchorVc = PageViewController()
-            anchorVc.titleLabel.text = title
-            childVcs.append(anchorVc)
-        }
         edgesForExtendedLayout = []
-        viewPagerController = ViewPagerController(frame: .zero, titles: titles, style: style, childVcs: childVcs)
+        pagerItems = [
+            PagerItem("待接单", cls: PageViewController()),
+            PagerItem("已接单", cls: PageViewController()),
+            PagerItem("代发货", cls: PageViewController()),
+            PagerItem("已发货", cls: PageViewController()),
+            PagerItem("已完成", cls: PageViewController()),
+        ]
+        viewPagerController = ViewPagerController(frame: .zero, style: CustomPagerBarStyle())
+        viewPagerController.pageItems = pagerItems
+        viewPagerController.dataSource = self
+        viewPagerController.delegate = self
         addChildViewController(viewPagerController)
         view.addSubview(viewPagerController.view)
         viewPagerController.didselected = { (viewPageBar, index) in
@@ -104,7 +67,7 @@ class ViewController: UIViewController {
     }
     
     @objc func changeItems() {
-        self.titles.removeLast()
+        self.pagerItems.removeLast()
     }
     
     override func didReceiveMemoryWarning() {
@@ -113,4 +76,56 @@ class ViewController: UIViewController {
     }
 
 }
+
+extension ViewController: ViewPagerDataSource {
+    
+    func itemsOfViewPager() -> [PagerItem] {
+        return self.pagerItems
+    }
+}
+
+extension ViewController: ViewPagerDelegate {
+    
+    func styleOfBarItem() -> StyleCustomizable {
+        return CustomPagerBarStyle()
+    }
+}
+
+struct CustomPagerBarStyle: StyleCustomizable {
+    
+    var titleBgColor: UIColor {
+        return UIColor.brown
+    }
+    
+    var isShowPageBar: Bool {
+        return true
+    }
+    
+    var isSplit: Bool {
+        return true
+    }
+    
+    var bottomLineW: CGFloat {
+        return 30
+    }
+    
+    var isAnimateWithProgress: Bool {
+        return false
+    }
+    
+    var bottomLineH: CGFloat {
+        return 1
+    }
+    
+    var titleMargin: CGFloat {
+        return 0
+    }
+    
+    var isShowBottomLine: Bool {
+        return true
+    }
+}
+
+
+
 

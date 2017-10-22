@@ -21,7 +21,7 @@ class PageContentView: UIView {
     
     weak var delegate : ContentViewDelegate?
     
-    fileprivate var childViewControllers : [UIViewController]!
+    var childViewControllers : [UIViewController]!
     fileprivate weak var parentVc : UIViewController!
     fileprivate var isForbidScrollDelegate : Bool = false
     fileprivate var startOffsetX : CGFloat = 0
