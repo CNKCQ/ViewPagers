@@ -46,6 +46,9 @@ public class ViewPagerController: UIViewController {
     
     public var childVcs : [UIViewController] = [] {
         didSet {
+            childVcs.forEach { (viewController) in
+                self.addChildViewController(viewController)
+            }
             self.contentView.childViewControllers = childVcs
         }
     }
@@ -76,6 +79,8 @@ public class ViewPagerController: UIViewController {
         super.viewWillLayoutSubviews()
         contentView.viewWillLayoutSubviews()
         viewPageBar.viewWillLayoutSubviews()
+        contentView.layoutSubviews()
+        viewPageBar.layoutSubviews()
         contentView.setCurrentIndex(viewPageBar.currentIndex)
     }
     
