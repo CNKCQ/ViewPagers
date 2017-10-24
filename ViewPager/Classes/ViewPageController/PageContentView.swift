@@ -21,7 +21,7 @@ class PageContentView: UIView {
     
     weak var delegate : ContentViewDelegate?
     
-    fileprivate var childViewControllers : [UIViewController]!
+    var childViewControllers : [UIViewController]!
     fileprivate weak var parentVc : UIViewController!
     fileprivate var isForbidScrollDelegate : Bool = false
     fileprivate var startOffsetX : CGFloat = 0
@@ -137,7 +137,7 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
             if targetIndex >= childViewControllers.count {
                 targetIndex = childViewControllers.count - 1
             }
-            if currentOffsetX - startOffsetX == scrollViewW {
+            if currentOffsetX - startOffsetX >= scrollViewW {
                 progress = 1
                 targetIndex = sourceIndex
                 return

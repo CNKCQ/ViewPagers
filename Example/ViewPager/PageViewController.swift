@@ -17,8 +17,9 @@ class PageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.random
         titleLabel.frame = view.bounds
+        titleLabel.textColor = UIColor.random
+        titleLabel.text = self.title
         view.addSubview(titleLabel)
     }
 }

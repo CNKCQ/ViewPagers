@@ -10,10 +10,91 @@ import UIKit
 import ViewPagers
 import SnapKit
 
+
+class ViewController: UIViewController {
+    
+    var viewPagerController: ViewPagerController!
+    var pagerItems: [PagerItem] = [] {
+        didSet {
+            if pagerItems.count < 2 {
+                self.viewPagerController?.isViewPageBarHidden = true
+            }
+            self.viewPagerController?.pageItems = pagerItems
+        }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        edgesForExtendedLayout = []
+        pagerItems = [
+            PagerItem("待接单", cls: PageViewController()),
+            PagerItem("已接单", cls: PageViewController()),
+            PagerItem("代发货", cls: PageViewController()),
+            PagerItem("已发货", cls: PageViewController()),
+            PagerItem("已完成", cls: PageViewController()),
+        ]
+        viewPagerController = ViewPagerController(frame: .zero, style: CustomPagerBarStyle())
+        viewPagerController.pageItems = pagerItems
+        viewPagerController.dataSource = self
+        viewPagerController.delegate = self
+        addChildViewController(viewPagerController)
+        view.addSubview(viewPagerController.view)
+        viewPagerController.didselected = { (viewPageBar, index) in
+            print("🌹", viewPageBar, index, "🌹")
+        }
+        viewPagerController.pageViewDidAppear = { (viewController, index) in
+            print("🌹", viewController, index, "🌹")
+        }
+        viewPagerController.view.snp.makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
+//        delay(after: 5) {
+//            self.titles = ["hello"]
+//        }
+    }
+    
+    func delay(after: TimeInterval, execute: @escaping () -> Void) {
+        let delayTime = DispatchTime.now() + after
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+            execute()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeItems))
+    }
+    
+    @objc func changeItems() {
+        self.pagerItems.removeLast()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+}
+
+extension ViewController: ViewPagerDataSource {
+    
+    func itemsOfViewPager() -> [PagerItem] {
+        return self.pagerItems
+    }
+}
+
+extension ViewController: ViewPagerDelegate {
+    
+    func styleOfBarItem() -> StyleCustomizable {
+        return CustomPagerBarStyle()
+    }
+}
+
 struct CustomPagerBarStyle: StyleCustomizable {
     
     var titleBgColor: UIColor {
-        return UIColor.white
+        return UIColor.brown
     }
     
     var isShowPageBar: Bool {
@@ -40,67 +121,11 @@ struct CustomPagerBarStyle: StyleCustomizable {
         return 0
     }
     
+    var isShowBottomLine: Bool {
+        return true
+    }
 }
 
-class ViewController: UIViewController {
-    
-    var viewPagerController: ViewPagerController!
-    var titles: [String] = [] {
-        didSet {
-            if titles.count < 2 {
-                self.viewPagerController.isViewPageBarHidden = true
-            }
-        }
-    }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
-        // 2.创建主题内容
-        let style = CustomPagerBarStyle()
-        var titles: [String] =
-            ["待接单", "代取件了吗", "配送中", "已完成", "待处理"]
-//        ["待接单", "代取件"]
-//        titles.removeAll()
-//        for index in 0..<15 {
-//            titles.append("Tab \(index)")
-//        }
-        var childVcs = [UIViewController]()
-        
-        for title in titles {
-            let anchorVc = PageViewController()
-            anchorVc.titleLabel.text = title
-            childVcs.append(anchorVc)
-        }
-        edgesForExtendedLayout = []
-        viewPagerController = ViewPagerController(frame: .zero, titles: titles, style: style, childVcs: childVcs)
-        addChildViewController(viewPagerController)
-        view.addSubview(viewPagerController.view)
-        viewPagerController.didselected = { (viewPageBar, index) in
-            print("🌹", viewPageBar, index, "🌹")
-        }
-        viewPagerController.pageViewDidAppear = { (viewController, index) in
-            print("🌹", viewController, index, "🌹")
-        }
-        viewPagerController.view.snp.makeConstraints { (make) in
-            make.edges.equalTo(self.view)
-        }
-//        delay(after: 5) {
-//            self.titles = ["hello"]
-//        }
-    }
-    
-    func delay(after: TimeInterval, execute: @escaping () -> Void) {
-        let delayTime = DispatchTime.now() + after
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            execute()
-        }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-}
 
