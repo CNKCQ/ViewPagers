@@ -1,5 +1,5 @@
 //
-//  PageContentView.swift
+//  PagerContentView.swift
 //  Pods-ViewPager_Example
 //
 //  Created by Steve on 17/10/2017.
@@ -10,19 +10,35 @@ import UIKit
 
 @objc protocol ContentViewDelegate : class {
     
-    func contentView(_ contentView: PageContentView, progress: CGFloat, sourceIndex : Int, targetIndex : Int)
+    func contentView(_ contentView: PagerContentView, progress: CGFloat, sourceIndex : Int, targetIndex : Int)
     
-    @objc optional func contentViewEndScroll(_ contentView: PageContentView)
+    @objc optional func contentViewEndScroll(_ contentView: PagerContentView)
+    
+    func contentView(_ contentView: PagerContentView, willAppear cell: UICollectionViewCell, at index: Int)
+    
+}
+
+@objc protocol ContentViewDataSource: class {
+    
+    func numberOfItem() -> Int
+    
+    func contentView(_ cell: UICollectionViewCell, index: Int) -> UICollectionViewCell
 }
 
 private let kContentCellID = "kContentCellID"
 
-class PageContentView: UIView {
+class PagerContentView: UIView {
     
     weak var delegate : ContentViewDelegate?
     
-    var childViewControllers : [UIViewController]!
-    fileprivate weak var parentVc : UIViewController!
+    weak var dataSource: ContentViewDataSource?
+    
+    var currentIndex: Int = 0 {
+        didSet {
+            self.setCurrentIndex(currentIndex)
+        }
+    }
+    
     fileprivate var isForbidScrollDelegate : Bool = false
     fileprivate var startOffsetX : CGFloat = 0
     
@@ -44,12 +60,8 @@ class PageContentView: UIView {
         return collectionView
     }()
     
-    init(frame: CGRect, childViewControllers : [UIViewController], parentViewController : UIViewController) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.childViewControllers = childViewControllers
-        self.parentVc = parentViewController
-        
         setupCollectionView()
     }
     
@@ -68,13 +80,9 @@ class PageContentView: UIView {
 
 
 // MARK:- setup the content
-extension PageContentView {
+extension PagerContentView {
     
     fileprivate func setupCollectionView() {
-
-        for vc in childViewControllers {
-            parentVc.addChildViewController(vc)
-        }
         
         addSubview(collectionView)
         
@@ -86,31 +94,31 @@ extension PageContentView {
 
 
 // MARK:- UICollectionViewDataSource
-extension PageContentView: UICollectionViewDataSource {
+extension PagerContentView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return childViewControllers.count
+        return self.dataSource?.numberOfItem() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kContentCellID, for: indexPath)
-        
-        for subview in cell.contentView.subviews {
-            subview.removeFromSuperview()
-        }
-        let childVc = childViewControllers[indexPath.item]
-        cell.contentView.addSubview(childVc.view)
-        childVc.view.snp.makeConstraints { (make) in
-            make.edges.equalTo(cell.contentView)
-        }
+        _ = self.dataSource?.contentView(cell, index: indexPath.item)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        print("🌹", sourceIndexPath, destinationIndexPath)
     }
 }
 
 
 // MARK:- UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
-extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension PagerContentView : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return self.bounds.size
@@ -125,43 +133,39 @@ extension PageContentView : UICollectionViewDelegate, UICollectionViewDelegateFl
 
         if isForbidScrollDelegate { return }
         var progress : CGFloat = 0
-        var sourceIndex : Int = 0
         var targetIndex : Int = 0
         
         let currentOffsetX = scrollView.contentOffset.x
         let scrollViewW = scrollView.bounds.width
+        let count = self.dataSource?.numberOfItem() ?? 0
         if currentOffsetX > startOffsetX { // left dragging
             progress = currentOffsetX / scrollViewW - floor(currentOffsetX / scrollViewW)
-            sourceIndex = Int(currentOffsetX / scrollViewW)
-            targetIndex = sourceIndex + 1
-            if targetIndex >= childViewControllers.count {
-                targetIndex = childViewControllers.count - 1
+            targetIndex = currentIndex + 1
+            if targetIndex >= count {
+                targetIndex = count - 1
             }
             if currentOffsetX - startOffsetX >= scrollViewW {
                 progress = 1
-                targetIndex = sourceIndex
+                targetIndex = currentIndex
                 return
             }
         } else { // right dragging
             progress = 1 - (currentOffsetX / scrollViewW - floor(currentOffsetX / scrollViewW))
             targetIndex = Int(currentOffsetX / scrollViewW)
-            sourceIndex = targetIndex + 1
-            if sourceIndex >= childViewControllers.count {
-                sourceIndex = childViewControllers.count - 1
-            }
         }
-        delegate?.contentView(self, progress: progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
+        delegate?.contentView(self, progress: progress, sourceIndex: currentIndex, targetIndex: targetIndex)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         delegate?.contentViewEndScroll?(self)
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        self.delegate?.contentView(self, willAppear: cell, at: indexPath.item)
     }
 }
 
-extension PageContentView {
+extension PagerContentView {
     
     func setCurrentIndex(_ currentIndex : Int) {
         isForbidScrollDelegate = true

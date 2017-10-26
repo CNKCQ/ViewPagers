@@ -1,5 +1,5 @@
 //
-//  PageBarItem.swift
+//  PagerBarItem.swift
 //  ViewPagers
 //
 //  Created by Steve on 04/10/2017.
@@ -23,7 +23,7 @@ public extension Reusable {
 
 extension UICollectionViewCell: Reusable {}
 
-class PageBarItem: UICollectionViewCell {
+class PagerBarItem: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

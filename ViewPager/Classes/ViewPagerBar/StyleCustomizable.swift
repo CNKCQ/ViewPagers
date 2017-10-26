@@ -11,7 +11,7 @@ import UIKit
 
 public protocol StyleCustomizable {
     
-    /// pageBarItem should be scroll
+    /// PagerBarItem should be scroll
     var isScrollEnable : Bool { get }
     
     /// the color of deselected item
@@ -20,16 +20,16 @@ public protocol StyleCustomizable {
     /// the color of the selected item
     var selectedColor : UIColor { get }
     
-    /// the margin of the pageBarItem
+    /// the margin of the PagerBarItem
     var titleMargin : CGFloat { get }
     
-    /// viewPageBar's height
+    /// ViewPagerBar's height
     var titleHeight : CGFloat { get }
     
     /// title width
     var titleWidth : CGFloat { get }
     
-    /// viewPageBar's backgroundColor
+    /// ViewPagerBar's backgroundColor
     var titleBgColor : UIColor { get }
     
     /// the item text font
@@ -78,7 +78,7 @@ public extension StyleCustomizable {
         return 4
     }
     
-    /// viewPageBar的高度
+    /// ViewPagerBar的高度
     var titleHeight : CGFloat {
         return 44
     }
@@ -88,7 +88,7 @@ public extension StyleCustomizable {
     }
 
     
-    /// viewPageBar's backgroundColor
+    /// ViewPagerBar's backgroundColor
     var titleBgColor : UIColor {
         return UIColor.clear
     }

@@ -1,5 +1,5 @@
 //
-//  ViewPageBar.swift
+//  ViewPagerBar.swift
 //  Pods
 //
 //  Created by Jack on 2017/7/2.
@@ -10,37 +10,48 @@
 import UIKit
 import SnapKit
 
-// MARK:- ViewPageBarDelegate
-protocol ViewPageBarDelegate : class {
+// MARK:- ViewPagerBarDelegate
+protocol ViewPagerBarDelegate : class {
     
-    func viewPageBar(_ viewPageBar : ViewPageBar, selectedIndex index : Int)
+    func viewPagerBar(_ ViewPagerBar : ViewPagerBar, selectedIndex index : Int)
     
 }
 
+protocol ViewPagerBarDataSource: class {
+    
+    func titlesOfPagerBar() -> [String]
+}
 
-public class ViewPageBar: UIView {
+
+public class ViewPagerBar: UIView {
     
-    weak var delegate : ViewPageBarDelegate?
+    weak var delegate : ViewPagerBarDelegate?
+    weak var dataSource: ViewPagerBarDataSource?
     
-    var currentIndex : Int = 0
-    
-    var titles : [String] = [] {
-        didSet {
-            self.collectionView.reloadData()
-            if titles.count < 2 {
-                return
-            }
-            self.currentIndex = 0
-            self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
-            self.delay(after: 0.001) { [weak self] in
-                guard let `self` = self else {
+    var currentIndex : Int = 0 {
+        willSet {
+            for index in 0..<(self.dataSource?.titlesOfPagerBar() ?? []).count {
+                guard let cell = self.collectionView?.cellForItem(at: IndexPath(item: index, section: 0)) as? PagerBarItem else {
                     return
                 }
-                self.setupBottomLine()
-                self.delegate?.viewPageBar(self, selectedIndex: 0)
+                cell.titleLabel.textColor = style.normalColor
+            }
+        }
+        didSet {
+            guard let cell = self.collectionView?.cellForItem(at: IndexPath(item: currentIndex, section: 0)) as? PagerBarItem else {
+                return
+            }
+            UIView.animate(withDuration: 0.25, animations: {
+                cell.titleLabel.textColor = self.style.selectedColor
+                self.bottomLine.center = CGPoint(x: cell.center.x, y: self.bottomLine.center.y)
+            }) { (_) in
+                if self.currentIndex < 2 { return }
+                self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex, section: 0), at: .centeredHorizontally, animated: true)
             }
         }
     }
+    
+    var titles : [String] = []
     
     var style : StyleCustomizable = DefaultPagerStyle() {
         didSet {
@@ -48,9 +59,9 @@ public class ViewPageBar: UIView {
         }
     }
     
-    var collectionView: UICollectionView!
+    var isInit: Bool = true
     
-    var initailCell: PageBarItem?
+    var collectionView: UICollectionView!
     
     var bottomoffset: CGFloat = 5
     
@@ -64,10 +75,9 @@ public class ViewPageBar: UIView {
     
     fileprivate lazy var selectedColor : (r : CGFloat, g : CGFloat, b : CGFloat) = self.rgb(self.style.selectedColor)
     
-    convenience init(frame: CGRect, titles : [String], style : StyleCustomizable) {
+    convenience init(frame: CGRect, style : StyleCustomizable) {
         self.init(frame: frame)
         self.style = style
-        self.titles = titles
         setupCollectionView()
         self.clipsToBounds = true
     }
@@ -78,14 +88,6 @@ public class ViewPageBar: UIView {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    public func delay(after: TimeInterval, execute: @escaping () -> Void) {
-        let delayTime = DispatchTime.now() + after
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            execute()
-        }
     }
     
     func viewWillLayoutSubviews() {
@@ -100,15 +102,16 @@ public class ViewPageBar: UIView {
         self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
         self.collectionView(self.collectionView, didSelectItemAt: indexPath)
     }
+    
 }
 
 // MARK: - randering ui
-extension ViewPageBar {
+extension ViewPagerBar {
     
     fileprivate func setupCollectionView() {
-        let layout = ViewPageBarLayout(self)
+        let layout = ViewPagerBarLayout(self)
         collectionView = UICollectionView(frame: self.bounds, collectionViewLayout: layout)
-        collectionView.register(PageBarItem.self, forCellWithReuseIdentifier: PageBarItem.reuseIdentifier)
+        collectionView.register(PagerBarItem.self, forCellWithReuseIdentifier: PagerBarItem.reuseIdentifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
@@ -124,39 +127,21 @@ extension ViewPageBar {
         collectionView.backgroundColor = style.titleBgColor
     }
     
-    func setupBottomLine() {
-        self.collectionView.addSubview(bottomLine)
-        guard let cell = self.collectionView.visibleCells.filter({ ($0 as? PageBarItem)?.titleLabel.text == self.titles.first}).first as? PageBarItem else {
-            return
-        }
-        self.initailCell = cell
-        cell.titleLabel.textColor = style.selectedColor
-        self.bottomLine.frame = CGRect(x: (cell.frame.width - style.bottomLineW) / 2, y: cell.frame.height - style.bottomLineH - style.bottomLineOffset, width: style.bottomLineW, height: style.bottomLineH)
-    }
-    
-    func resetInitailCell() {
-        guard let cell = self.initailCell else {
-            return
-        }
-        cell.titleLabel.textColor = style.selectedColor
-        self.bottomLine.frame = CGRect(x: (cell.frame.width - style.bottomLineW) / 2, y: cell.frame.height - style.bottomLineH - style.bottomLineOffset, width: style.bottomLineW, height: style.bottomLineH)
-    }
-    
     func frmaeOfCellAt(_ index: Int) -> CGRect {
         let layoutAttributes: UICollectionViewLayoutAttributes? = self.collectionView?.layoutAttributesForItem(at: IndexPath(item: index, section: 0))
         return layoutAttributes?.frame ?? .zero
     }
-
 }
 
-extension ViewPageBar: UICollectionViewDataSource {
+extension ViewPagerBar: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        self.titles = self.dataSource?.titlesOfPagerBar() ?? []
         return self.titles.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PageBarItem.reuseIdentifier, for: indexPath) as? PageBarItem else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PagerBarItem.reuseIdentifier, for: indexPath) as? PagerBarItem else {
             fatalError("not found the right cell")
         }
         cell.titleLabel.font = style.font
@@ -166,36 +151,45 @@ extension ViewPageBar: UICollectionViewDataSource {
     }
 }
 
-extension ViewPageBar: UICollectionViewDelegate {
+extension ViewPagerBar: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.viewPageBar(self, selectedIndex: indexPath.item)
-        let fromCell: PageBarItem? = collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0)) as? PageBarItem
+        let fromCell: PagerBarItem? = collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0)) as? PagerBarItem
 
         fromCell?.titleLabel.textColor = style.normalColor
-        delay(after: 0.1) { [weak self] in
-            guard let `self` = self else { return }
-            guard let toCell: PageBarItem = collectionView.cellForItem(at: indexPath) as? PageBarItem else {
-                return
-            }
-            toCell.titleLabel.textColor = self.style.selectedColor
-            UIView.animate(withDuration: 0.25) {
-                self.bottomLine.center = CGPoint(x: toCell.center.x, y: self.bottomLine.center.y)
-            }
-            self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            
-            self.currentIndex = indexPath.item
+        guard let toCell: PagerBarItem = collectionView.cellForItem(at: indexPath) as? PagerBarItem else {
+            return
         }
+        toCell.titleLabel.textColor = self.style.selectedColor
+        UIView.animate(withDuration: 0.25) {
+            self.bottomLine.center = CGPoint(x: toCell.center.x, y: self.bottomLine.center.y)
+        }
+        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        delegate?.viewPagerBar(self, selectedIndex: indexPath.item)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let selectedCell: PageBarItem? = collectionView.cellForItem(at: indexPath) as? PageBarItem
+        let selectedCell: PagerBarItem? = collectionView.cellForItem(at: indexPath) as? PagerBarItem
         selectedCell?.titleLabel.textColor = style.normalColor
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == 0, isInit == true {
+            guard let cell = cell as? PagerBarItem else {
+                return
+            }
+            bottomLine.removeFromSuperview()
+            self.collectionView.addSubview(bottomLine)
+            cell.isSelected = true
+            cell.titleLabel.textColor = style.selectedColor
+            self.bottomLine.frame = CGRect(x: (cell.frame.width - style.bottomLineW) / 2, y: cell.frame.height - style.bottomLineH - style.bottomLineOffset, width: style.bottomLineW, height: style.bottomLineH)
+            isInit = false
+        }
     }
     
 }
 
-extension ViewPageBar: UICollectionViewDelegateFlowLayout {
+extension ViewPagerBar: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size: CGSize = (self.titles[indexPath.item] as NSString).size(withAttributes: [NSAttributedStringKey.font: style.font])
@@ -209,34 +203,19 @@ extension ViewPageBar: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension ViewPageBar {
-    
-    func contentViewEndScroll() {
-        
-        guard let currentCell = self.collectionView.cellForItem(at: IndexPath(item: currentIndex, section: 0)) else {
-            return
-        }
-        UIView.animate(withDuration: 0.25, animations: {
-            self.bottomLine.center = CGPoint(x: currentCell.center.x, y: self.bottomLine.center.y)
-        }) { (_) in
-            self.collectionView.scrollToItem(at: IndexPath(item: self.currentIndex, section: 0), at: .centeredHorizontally, animated: true)
-        }
-    }
+extension ViewPagerBar {
     
     func updateProgress(_ progress : CGFloat, fromIndex : Int, toIndex : Int) {
-        
-        guard let sourceItem = self.collectionView.cellForItem(at: IndexPath(item: fromIndex, section: 0)) as? PageBarItem else {
+        guard let sourceItem = self.collectionView.cellForItem(at: IndexPath(item: fromIndex, section: 0)) as? PagerBarItem else {
             return
         }
-        guard let targetItem = self.collectionView.cellForItem(at: IndexPath(item: toIndex, section: 0)) as? PageBarItem else {
+        guard let targetItem = self.collectionView.cellForItem(at: IndexPath(item: toIndex, section: 0)) as? PagerBarItem else {
             return
         }
         let colorDelta = (selectedColor.0 - normalColor.0, selectedColor.1 - normalColor.1, selectedColor.2 - normalColor.2)
 
         sourceItem.titleLabel.textColor = UIColor(r: selectedColor.0 - colorDelta.0 * progress, g: selectedColor.1 - colorDelta.1 * progress, b: selectedColor.2 - colorDelta.2 * progress)
         targetItem.titleLabel.textColor = UIColor(r: normalColor.0 + colorDelta.0 * progress, g: normalColor.1 + colorDelta.1 * progress, b: normalColor.2 + colorDelta.2 * progress)
-
-        currentIndex = toIndex
         let bottomLineFromCenterX = sourceItem.center.x
         let marginWidth: CGFloat = fabs(targetItem.center.x - sourceItem.center.x)
         let progressWidth: CGFloat = progress * (targetItem.frame.width + style.titleMargin)
@@ -255,7 +234,7 @@ extension ViewPageBar {
 }
 
 // MARK:- get the cgfloat of the color
-extension ViewPageBar {
+extension ViewPagerBar {
     
     fileprivate func rgb(_ color : UIColor) -> (CGFloat, CGFloat, CGFloat) {
         return (color.components[0] * 255, color.components[1] * 255, color.components[2] * 255)

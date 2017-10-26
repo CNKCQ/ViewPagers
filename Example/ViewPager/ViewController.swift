@@ -13,13 +13,13 @@ import SnapKit
 
 class ViewController: UIViewController {
     
-    var viewPagerController: ViewPagerController!
+    var viewPager: ViewPager!
     var pagerItems: [PagerItem] = [] {
         didSet {
             if pagerItems.count < 2 {
-                self.viewPagerController?.isViewPageBarHidden = true
+                self.viewPager?.isViewPagerBarHidden = true
             }
-            self.viewPagerController?.pageItems = pagerItems
+            self.viewPager?.reloadData()
         }
     }
 
@@ -28,30 +28,34 @@ class ViewController: UIViewController {
         
         edgesForExtendedLayout = []
         pagerItems = [
-            PagerItem("待接单", cls: PageViewController()),
-            PagerItem("已接单", cls: PageViewController()),
-            PagerItem("代发货", cls: PageViewController()),
-            PagerItem("已发货", cls: PageViewController()),
-            PagerItem("已完成", cls: PageViewController()),
+            PagerItem("待接单1", cls: PageViewController()),
+            PagerItem("已接单2", cls: PageViewController()),
+            PagerItem("代发货3", cls: PageViewController()),
+            PagerItem("已发货4", cls: PageViewController()),
+            PagerItem("已完成5", cls: PageViewController()),
+            PagerItem("待接单6", cls: PageViewController()),
+            PagerItem("已接单7", cls: PageViewController()),
+            PagerItem("代发货8", cls: PageViewController()),
+            PagerItem("已发货9", cls: PageViewController()),
+            PagerItem("已完成10", cls: PageViewController()),
+            PagerItem("待接单11", cls: PageViewController()),
+            PagerItem("已接单12", cls: PageViewController()),
+            PagerItem("代发货13", cls: PageViewController()),
+            PagerItem("已发货14", cls: PageViewController()),
+            PagerItem("已完成15", cls: PageViewController()),
+//            "待接单",
+//            "已接单",
+//            "代发货",
+//            "已发货",
+//            "已完成",
         ]
-        viewPagerController = ViewPagerController(frame: .zero, style: CustomPagerBarStyle())
-        viewPagerController.pageItems = pagerItems
-        viewPagerController.dataSource = self
-        viewPagerController.delegate = self
-        addChildViewController(viewPagerController)
-        view.addSubview(viewPagerController.view)
-        viewPagerController.didselected = { (viewPageBar, index) in
-            print("🌹", viewPageBar, index, "🌹")
-        }
-        viewPagerController.pageViewDidAppear = { (viewController, index) in
-            print("🌹", viewController, index, "🌹")
-        }
-        viewPagerController.view.snp.makeConstraints { (make) in
+        self.viewPager = ViewPager(CustomPagerBarStyle())
+        self.viewPager.delegate = self
+        self.viewPager.dataSource = self
+        self.view.addSubview(self.viewPager)
+        self.viewPager.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-//        delay(after: 5) {
-//            self.titles = ["hello"]
-//        }
     }
     
     func delay(after: TimeInterval, execute: @escaping () -> Void) {
@@ -74,21 +78,37 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
 
 extension ViewController: ViewPagerDataSource {
     
-    func itemsOfViewPager() -> [PagerItem] {
-        return self.pagerItems
+    func titlesOfViewPager() -> [String] {
+        return self.pagerItems.flatMap({ $0.title })
+    }
+    
+    func viewPager(_ cell: UICollectionViewCell, index: Int) -> UICollectionViewCell {
+        let controller = pagerItems.flatMap({ $0.cls })[index]
+        addChildViewController(controller)
+        cell.contentView.addSubview(controller.view)
+        controller.view.snp.makeConstraints { (make) in
+            make.edges.equalTo(cell.contentView)
+        }
+        return cell
     }
 }
 
+
 extension ViewController: ViewPagerDelegate {
     
-    func styleOfBarItem() -> StyleCustomizable {
-        return CustomPagerBarStyle()
+    func viewPager(_ viewPager: ViewPager, didSelected index: Int) {
+        print("🌹---\(index)----selected")
     }
+    
+    func viewPager(_ viewPager: ViewPager, willAppear cell: UICollectionViewCell, at index: Int) {
+        print("🌹---\(index)---willDisPlay")
+    }
+
 }
 
 struct CustomPagerBarStyle: StyleCustomizable {
@@ -102,7 +122,7 @@ struct CustomPagerBarStyle: StyleCustomizable {
     }
     
     var isSplit: Bool {
-        return true
+        return false
     }
     
     var bottomLineW: CGFloat {
@@ -110,7 +130,7 @@ struct CustomPagerBarStyle: StyleCustomizable {
     }
     
     var isAnimateWithProgress: Bool {
-        return false
+        return true
     }
     
     var bottomLineH: CGFloat {
@@ -118,11 +138,22 @@ struct CustomPagerBarStyle: StyleCustomizable {
     }
     
     var titleMargin: CGFloat {
-        return 0
+        return 10
     }
     
     var isShowBottomLine: Bool {
         return true
+    }
+}
+
+struct PagerItem {
+    
+    var title: String
+    var cls: UIViewController
+    
+    init(_ title: String, cls: UIViewController) {
+        self.title = title
+        self.cls = cls
     }
 }
 
