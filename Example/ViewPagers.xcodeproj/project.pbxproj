@@ -15,6 +15,11 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		AA43698A1FA43F3D00081E30 /* PageTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4369891FA43F3D00081E30 /* PageTableController.swift */; };
+		AA43698C1FA4435200081E30 /* Next1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA43698B1FA4435200081E30 /* Next1ViewController.swift */; };
+		AA4369901FA4A13C00081E30 /* Next2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA43698F1FA4A13C00081E30 /* Next2ViewController.swift */; };
+		AA4369921FA4A35C00081E30 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4369911FA4A35C00081E30 /* TableViewController.swift */; };
+		AA4369941FA4A84200081E30 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4369931FA4A84200081E30 /* TopViewController.swift */; };
 		AA84022D1F98B6FE00F29A86 /* ViewPagers.podspec in Resources */ = {isa = PBXBuildFile; fileRef = AA84022C1F98B6FE00F29A86 /* ViewPagers.podspec */; };
 		D84B7E17B3093DFE5BC85AB2 /* Pods_ViewPagers_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C8CFB3021F6C97533F9147 /* Pods_ViewPagers_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -47,6 +52,11 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		68C8CFB3021F6C97533F9147 /* Pods_ViewPagers_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ViewPagers_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		951592997C59F81A5A2BF07C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		AA4369891FA43F3D00081E30 /* PageTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTableController.swift; sourceTree = "<group>"; };
+		AA43698B1FA4435200081E30 /* Next1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Next1ViewController.swift; sourceTree = "<group>"; };
+		AA43698F1FA4A13C00081E30 /* Next2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Next2ViewController.swift; sourceTree = "<group>"; };
+		AA4369911FA4A35C00081E30 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		AA4369931FA4A84200081E30 /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewController.swift; sourceTree = "<group>"; };
 		AA84022C1F98B6FE00F29A86 /* ViewPagers.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ViewPagers.podspec; path = ../ViewPagers.podspec; sourceTree = "<group>"; };
 		B2B0A62199E9FFACCDE7F524 /* Pods-ViewPagers_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ViewPagers_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ViewPagers_Tests/Pods-ViewPagers_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CE327AE6578CE6B7FBCD83B0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -108,6 +118,11 @@
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				043DC4821F09445900CE2ECF /* PageViewController.swift */,
+				AA4369911FA4A35C00081E30 /* TableViewController.swift */,
+				AA43698B1FA4435200081E30 /* Next1ViewController.swift */,
+				AA43698F1FA4A13C00081E30 /* Next2ViewController.swift */,
+				AA4369931FA4A84200081E30 /* TopViewController.swift */,
+				AA4369891FA43F3D00081E30 /* PageTableController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -379,7 +394,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA4369901FA4A13C00081E30 /* Next2ViewController.swift in Sources */,
+				AA4369921FA4A35C00081E30 /* TableViewController.swift in Sources */,
+				AA43698C1FA4435200081E30 /* Next1ViewController.swift in Sources */,
 				043DC4831F09445900CE2ECF /* PageViewController.swift in Sources */,
+				AA4369941FA4A84200081E30 /* TopViewController.swift in Sources */,
+				AA43698A1FA43F3D00081E30 /* PageTableController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);

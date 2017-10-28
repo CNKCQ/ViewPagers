@@ -35,7 +35,7 @@ class PagerContentView: UIView {
     
     var currentIndex: Int = 0 {
         didSet {
-            self.setCurrentIndex(currentIndex)
+            self.set(currentIndex)
         }
     }
     
@@ -167,7 +167,7 @@ extension PagerContentView : UICollectionViewDelegate, UICollectionViewDelegateF
 
 extension PagerContentView {
     
-    func setCurrentIndex(_ currentIndex : Int) {
+    func set(_ currentIndex : Int) {
         isForbidScrollDelegate = true
         let offsetX = CGFloat(currentIndex) * collectionView.frame.width
         collectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false)
