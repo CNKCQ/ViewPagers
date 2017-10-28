@@ -1,7 +1,7 @@
 PODS:
-  - SnapKit (4.0.0)
+  - SnapKit (3.2.0)
   - ViewPagers (0.1.5):
-    - SnapKit
+    - SnapKit (= 3.2.0)
 
 DEPENDENCIES:
   - ViewPagers (from `../`)
@@ -11,8 +11,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
-  ViewPagers: b9523e92e91425143ad8cc33724268393034bbcc
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  ViewPagers: af37c85a672b54899fff444786550874f2c17882
 
 PODFILE CHECKSUM: 0f7fbe50e3de575e14a5313735bfa31e9019d6cc
 
