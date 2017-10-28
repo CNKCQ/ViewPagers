@@ -10,105 +10,61 @@ import UIKit
 import ViewPagers
 import SnapKit
 
+enum ViewPagerOptions: String {
+    case push = "push"
+    case present = "present"
+}
 
 class ViewController: UIViewController {
     
-    var viewPager: ViewPager!
-    var pagerItems: [PagerItem] = [] {
-        didSet {
-            if pagerItems.count < 2 {
-                self.viewPager?.isViewPagerBarHidden = true
-            }
-            self.viewPager?.reloadData()
-        }
-    }
+    var tableView: UITableView!
+    var items: [String] = ["push", "present"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView = UITableView(frame: .zero, style: .plain)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.tableFooterView = UIView()
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.view.addSubview(tableView)
+        title = "ViewPagers"
         edgesForExtendedLayout = []
-        pagerItems = [
-            PagerItem("待接单1", cls: PageViewController()),
-            PagerItem("已接单2", cls: PageViewController()),
-            PagerItem("代发货3", cls: PageViewController()),
-            PagerItem("已发货4", cls: PageViewController()),
-            PagerItem("已完成5", cls: PageViewController()),
-            PagerItem("待接单6", cls: PageViewController()),
-            PagerItem("已接单7", cls: PageViewController()),
-            PagerItem("代发货8", cls: PageViewController()),
-            PagerItem("已发货9", cls: PageViewController()),
-            PagerItem("已完成10", cls: PageViewController()),
-            PagerItem("待接单11", cls: PageViewController()),
-            PagerItem("已接单12", cls: PageViewController()),
-            PagerItem("代发货13", cls: PageViewController()),
-            PagerItem("已发货14", cls: PageViewController()),
-            PagerItem("已完成15", cls: PageViewController()),
-//            "待接单",
-//            "已接单",
-//            "代发货",
-//            "已发货",
-//            "已完成",
-        ]
-        self.viewPager = ViewPager(CustomPagerBarStyle())
-        self.viewPager.delegate = self
-        self.viewPager.dataSource = self
-        self.view.addSubview(self.viewPager)
-        self.viewPager.snp.makeConstraints { (make) in
+        tableView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-    }
-    
-    func delay(after: TimeInterval, execute: @escaping () -> Void) {
-        let delayTime = DispatchTime.now() + after
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            execute()
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeItems))
-    }
-    
-    @objc func changeItems() {
-        self.pagerItems.removeLast()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 }
 
-extension ViewController: ViewPagerDataSource {
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func titlesOfViewPager() -> [String] {
-        return self.pagerItems.flatMap({ $0.title })
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.items.count
     }
     
-    func viewPager(_ cell: UICollectionViewCell, index: Int) -> UICollectionViewCell {
-        let controller = pagerItems.flatMap({ $0.cls })[index]
-        addChildViewController(controller)
-        cell.contentView.addSubview(controller.view)
-        controller.view.snp.makeConstraints { (make) in
-            make.edges.equalTo(cell.contentView)
-        }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = self.items[indexPath.row]
         return cell
     }
-}
-
-
-extension ViewController: ViewPagerDelegate {
     
-    func viewPager(_ viewPager: ViewPager, didSelected index: Int) {
-        print("🌹---\(index)----selected")
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let option: ViewPagerOptions = ViewPagerOptions(rawValue: self.items[indexPath.row]) ?? .push
+        switch option {
+        case .push:
+            let dest = NavTabViewController()
+            self.navigationController?.pushViewController(dest, animated: true)
+        case .present:
+            let dest = PreTabViewController()
+            let navDest = UINavigationController(rootViewController: dest)
+            self.present(navDest, animated: true, completion: nil)
+        }
     }
-    
-    func viewPager(_ viewPager: ViewPager, willAppear cell: UICollectionViewCell, at index: Int) {
-        print("🌹---\(index)---willDisPlay")
-    }
-
 }
 
 struct CustomPagerBarStyle: StyleCustomizable {
@@ -122,7 +78,7 @@ struct CustomPagerBarStyle: StyleCustomizable {
     }
     
     var isSplit: Bool {
-        return false
+        return true
     }
     
     var bottomLineW: CGFloat {

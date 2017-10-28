@@ -35,7 +35,7 @@ class PagerContentView: UIView {
     
     var currentIndex: Int = 0 {
         didSet {
-            self.setCurrentIndex(currentIndex)
+            self.set(currentIndex)
         }
     }
     
@@ -85,10 +85,11 @@ extension PagerContentView {
     fileprivate func setupCollectionView() {
         
         addSubview(collectionView)
-        
         collectionView.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
+        backgroundColor = .clear
+        collectionView.backgroundColor = .clear
     }
 }
 
@@ -101,19 +102,10 @@ extension PagerContentView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kContentCellID, for: indexPath)
-        _ = self.dataSource?.contentView(cell, index: indexPath.item)
-        return cell
+        return self.dataSource?.contentView(cell, index: indexPath.item) ?? UICollectionViewCell()
     }
     
-    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        print("🌹", sourceIndexPath, destinationIndexPath)
-    }
 }
 
 
@@ -167,7 +159,7 @@ extension PagerContentView : UICollectionViewDelegate, UICollectionViewDelegateF
 
 extension PagerContentView {
     
-    func setCurrentIndex(_ currentIndex : Int) {
+    func set(_ currentIndex : Int) {
         isForbidScrollDelegate = true
         let offsetX = CGFloat(currentIndex) * collectionView.frame.width
         collectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false)

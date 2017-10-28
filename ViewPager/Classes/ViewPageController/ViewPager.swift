@@ -51,6 +51,9 @@ public class ViewPager: UIView {
     public var isViewPagerBarHidden: Bool = false {
         didSet {
             let height: CGFloat = isViewPagerBarHidden ? 0 : self.viewPagerBar.style.titleHeight
+            if isViewPagerBarHidden == true {
+                self.currentIndex = 0
+            }
             self.viewPagerBar.snp.updateConstraints { (make) in
                 make.height.equalTo(height)
             }
@@ -61,6 +64,7 @@ public class ViewPager: UIView {
     public convenience init(_ style: StyleCustomizable) {
         self.init(frame: .zero)
         self.style = style
+        backgroundColor = .clear
         setupContentView()
     }
     
@@ -80,7 +84,7 @@ public class ViewPager: UIView {
             guard let `self` = self else {
                 return
             }
-            if self.currentIndex >= count-1 {
+            if self.currentIndex >= count-1, count > 0 {
                 self.currentIndex = count-1
             } else {
                 self.set(current: self.currentIndex)
@@ -96,8 +100,13 @@ public class ViewPager: UIView {
     }
     
     func set(current index: Int) {
-        self.viewPagerBar.currentIndex = index
-        self.contentView.currentIndex = index
+        delay(after: 0.001) { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            self.viewPagerBar.currentIndex = index
+            self.contentView.currentIndex = index
+        }
     }
     
     public func delay(after: TimeInterval, execute: @escaping () -> Void) {

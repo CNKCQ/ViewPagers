@@ -193,6 +193,7 @@ extension ViewPagerBar: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size: CGSize = (self.titles[indexPath.item] as NSString).size(withAttributes: [NSAttributedStringKey.font: style.font])
+
         if style.isSplit == true {
             return CGSize(width: (collectionView.bounds.width - (style.titleMargin * CGFloat(self.titles.count + 1))) / CGFloat(self.titles.count), height: collectionView.bounds.height)
         }
