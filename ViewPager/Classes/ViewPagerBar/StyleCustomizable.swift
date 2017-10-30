@@ -35,6 +35,7 @@ public protocol StyleCustomizable {
     /// the item text font
     var font : UIFont { get }
 
+    var scaleFont: UIFont { get }
     
     /// 是否显示底部滚动条
     var isShowBottomLine: Bool { get }
@@ -96,6 +97,10 @@ public extension StyleCustomizable {
     /// Title字体大小
     var font : UIFont {
         return UIFont.systemFont(ofSize: 14.0)
+    }
+    
+    var scaleFont: UIFont {
+        return font
     }
     
     /// 是否显示底部滚动条

@@ -35,6 +35,7 @@ public class ViewPagerBar: UIView {
                     return
                 }
                 cell.titleLabel.textColor = style.normalColor
+                cell.titleLabel.font = style.font
             }
         }
         didSet {
@@ -43,6 +44,7 @@ public class ViewPagerBar: UIView {
             }
             UIView.animate(withDuration: 0.25, animations: {
                 cell.titleLabel.textColor = self.style.selectedColor
+                cell.titleLabel.font = self.style.scaleFont
                 self.bottomLine.center = CGPoint(x: cell.center.x, y: self.bottomLine.center.y)
             }) { (_) in
                 if self.currentIndex < 2 { return }
@@ -157,10 +159,12 @@ extension ViewPagerBar: UICollectionViewDelegate {
         let fromCell: PagerBarItem? = collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0)) as? PagerBarItem
 
         fromCell?.titleLabel.textColor = style.normalColor
+        fromCell?.titleLabel.font = style.font
         guard let toCell: PagerBarItem = collectionView.cellForItem(at: indexPath) as? PagerBarItem else {
             return
         }
         toCell.titleLabel.textColor = self.style.selectedColor
+        toCell.titleLabel.font = style.scaleFont
         UIView.animate(withDuration: 0.25) {
             self.bottomLine.center = CGPoint(x: toCell.center.x, y: self.bottomLine.center.y)
         }
@@ -171,6 +175,7 @@ extension ViewPagerBar: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let selectedCell: PagerBarItem? = collectionView.cellForItem(at: indexPath) as? PagerBarItem
         selectedCell?.titleLabel.textColor = style.normalColor
+        selectedCell?.titleLabel.font = style.font
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -182,6 +187,7 @@ extension ViewPagerBar: UICollectionViewDelegate {
             self.collectionView.addSubview(bottomLine)
             cell.isSelected = true
             cell.titleLabel.textColor = style.selectedColor
+            cell.titleLabel.font = style.scaleFont
             self.bottomLine.frame = CGRect(x: (cell.frame.width - style.bottomLineW) / 2, y: cell.frame.height - style.bottomLineH - style.bottomLineOffset, width: style.bottomLineW, height: style.bottomLineH)
             isInit = false
         }
@@ -214,9 +220,12 @@ extension ViewPagerBar {
             return
         }
         let colorDelta = (selectedColor.0 - normalColor.0, selectedColor.1 - normalColor.1, selectedColor.2 - normalColor.2)
-
+        let fontDelta = (style.scaleFont.pointSize - style.font.pointSize)
+        sourceItem.titleLabel.font = UIFont.systemFont(ofSize: (style.scaleFont.pointSize - fontDelta * progress))
+        targetItem.titleLabel.font = UIFont.systemFont(ofSize: (style.scaleFont.pointSize + fontDelta * progress))
         sourceItem.titleLabel.textColor = UIColor(r: selectedColor.0 - colorDelta.0 * progress, g: selectedColor.1 - colorDelta.1 * progress, b: selectedColor.2 - colorDelta.2 * progress)
         targetItem.titleLabel.textColor = UIColor(r: normalColor.0 + colorDelta.0 * progress, g: normalColor.1 + colorDelta.1 * progress, b: normalColor.2 + colorDelta.2 * progress)
+        
         let bottomLineFromCenterX = sourceItem.center.x
         let marginWidth: CGFloat = fabs(targetItem.center.x - sourceItem.center.x)
         let progressWidth: CGFloat = progress * (targetItem.frame.width + style.titleMargin)
@@ -226,7 +235,6 @@ extension ViewPagerBar {
         } else if progressWidth * 2 > marginWidth {
             UIView.animate(withDuration: 0.25, animations: {
                 self.bottomLine.center = CGPoint(x: targetItem.center.x, y: self.bottomLine.center.y)
-
             }, completion: { (_) in
                 self.collectionView.scrollToItem(at: IndexPath(item: toIndex, section: 0), at: .centeredHorizontally, animated: true)
             })

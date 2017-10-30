@@ -32,26 +32,26 @@ class PreTabViewController: UIViewController {
         pagerItems = [
             PagerItem("待接单1", cls: Next1ViewController()),
             PagerItem("已接单2", cls: Next2ViewController()),
-            //            PagerItem("代发货3", cls: PageTableController()),
-            //            PagerItem("已发货4", cls: PageViewController()),
-            //            PagerItem("已完成5", cls: PageTableController()),
-            //            PagerItem("待接单6", cls: PageViewController()),
-            //            PagerItem("已接单7", cls: PageTableController()),
-            //            PagerItem("代发货8", cls: PageViewController()),
-            //            PagerItem("已发货9", cls: PageTableController()),
-            //            PagerItem("已完成10", cls: PageViewController()),
-            //            PagerItem("待接单11", cls: PageViewController()),
-            //            PagerItem("已接单12", cls: PageViewController()),
-            //            PagerItem("代发货13", cls: PageViewController()),
-            //            PagerItem("已发货14", cls: PageTableController()),
-            //            PagerItem("已完成15", cls: PageViewController()),
+            PagerItem("代发货3", cls: PageTableController()),
+            PagerItem("已发货4", cls: PageViewController()),
+            PagerItem("已完成5", cls: PageTableController()),
+            PagerItem("待接单6", cls: PageViewController()),
+            PagerItem("已接单7", cls: PageTableController()),
+            PagerItem("代发货8", cls: PageViewController()),
+            PagerItem("已发货9", cls: PageTableController()),
+            PagerItem("已完成10", cls: PageViewController()),
+            PagerItem("待接单11", cls: PageViewController()),
+            PagerItem("已接单12", cls: PageViewController()),
+            PagerItem("代发货13", cls: PageViewController()),
+            PagerItem("已发货14", cls: PageTableController()),
+            PagerItem("已完成15", cls: PageViewController()),
             //            "待接单",
             //            "已接单",
             //            "代发货",
             //            "已发货",
             //            "已完成",
         ]
-        self.viewPager = ViewPager(CustomPagerBarStyle())
+        self.viewPager = ViewPager(PrePagerBarStyle())
         self.viewPager.delegate = self
         self.viewPager.dataSource = self
         self.view.addSubview(self.viewPager)
@@ -59,13 +59,6 @@ class PreTabViewController: UIViewController {
             make.edges.equalTo(self.view)
         }
     }
-    
-    //    func delay(after: TimeInterval, execute: @escaping () -> Void) {
-    //        let delayTime = DispatchTime.now() + after
-    //        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-    //            execute()
-    //        }
-    //    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -122,6 +115,47 @@ extension PreTabViewController: ViewPagerDelegate {
     }
     
 }
+
+struct PrePagerBarStyle: StyleCustomizable {
+    
+    var titleBgColor: UIColor {
+        return UIColor.brown
+    }
+    
+    var isShowPageBar: Bool {
+        return true
+    }
+    
+    var isSplit: Bool {
+        return false
+    }
+    
+    var bottomLineW: CGFloat {
+        return 30
+    }
+    
+    var isAnimateWithProgress: Bool {
+        return true
+    }
+    
+    var bottomLineH: CGFloat {
+        return 1
+    }
+    
+    var titleMargin: CGFloat {
+        return 10
+    }
+    
+    var isShowBottomLine: Bool {
+        return true
+    }
+    
+    var scaleFont: UIFont {
+        return UIFont.systemFont(ofSize: 15)
+    }
+    
+}
+
 
 
 

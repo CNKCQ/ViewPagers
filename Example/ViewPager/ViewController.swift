@@ -61,8 +61,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             self.navigationController?.pushViewController(dest, animated: true)
         case .present:
             let dest = PreTabViewController()
-            let navDest = UINavigationController(rootViewController: dest)
-            self.present(navDest, animated: true, completion: nil)
+            self.navigationController?.pushViewController(dest, animated: true)
         }
     }
 }
