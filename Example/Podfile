@@ -2,6 +2,7 @@ use_frameworks!
 
 target 'ViewPagers_Example' do
     pod 'ViewPagers', :path => '../'
+#pod 'ViewPagers'
 
   target 'ViewPagers_Tests' do
     inherit! :search_paths

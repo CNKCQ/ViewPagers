@@ -22,6 +22,7 @@ class Next1ViewController: TableViewController {
             "next 1",
             "next 1",
         ]
+        tableView.backgroundColor = UIColor.random
         self.tableView.reloadData()
     }
 }

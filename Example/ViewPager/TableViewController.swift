@@ -21,7 +21,7 @@ class TableViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: kidentifier)
         view.backgroundColor = UIColor.cyan
         tableView.tableFooterView = UIView()
-        tableView.backgroundColor = UIColor.yellow
+        tableView.backgroundColor = UIColor.random
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
